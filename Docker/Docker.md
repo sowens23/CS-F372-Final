@@ -1,1 +1,0 @@
-# Here we have our docker setup that can run all projects in OS and SC

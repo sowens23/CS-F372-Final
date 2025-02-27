@@ -1,1 +1,0 @@
-# Here lies Sc group projects

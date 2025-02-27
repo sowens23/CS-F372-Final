@@ -1,0 +1,32 @@
+<!-- 
+  Filename: webpage.html
+  Function: Provides an HTML form for username, password, 
+            and a submit button. No inline JS or CSS.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+  <h1>Login Screen</h1>
+  <form id="loginForm" name="loginForm" action="/login" method="POST">
+    <label for="usernameField">Username:</label>
+    <input type="text" id="usernameField" name="usernameField" required>
+
+    <label for="passwordField">Password:</label>
+    <input type="password" id="passwordField" name="passwordField" required>
+
+    <button type="submit" id="submitButton" name="submitButton">Submit</button>
+  </form>
+
+  <!-- 
+    No JavaScript in HTML: 
+    script tags would go here if we had a separate client .js 
+    but the guidelines ask for 3 files only (HTML, server.js, stylesheet.css)
+  -->
+</body>
+</html>
