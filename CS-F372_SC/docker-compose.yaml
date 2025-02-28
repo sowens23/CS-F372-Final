@@ -1,0 +1,39 @@
+# Build: docker-compose up --build -d
+# -d flag runs the containers in the background.
+# Stop: docker-compose down
+
+# Access MongoDB: docker-compose exec docker_mongo mongosh
+# Access Node.js: docker-compose exec docker_node bash
+
+# Print startup logs in docker_node: docker-compose logs docker_node
+
+# This starts the MongoDB and Node.js containers in the background.
+
+name: CS-F372_DockerBuild
+services:
+  docker_mongo:
+  # Use the latest version of MongoDB docker image, no need for custom Dockerfile
+    image: mongo:6.0
+    container_name: docker_mongo
+    volumes:
+      - mongo_data:/data/db
+    # You can expose port 27017 if you want local dev access:
+    ports:
+      - "27017:27017"
+
+  docker_node:
+  # Use the custom Dockerfile for Node.js called Dockerfile.node
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: docker_node
+    # Port is already open. No need to expose it.
+    ports:
+      - "3000:3000"
+    depends_on:
+      - docker_mongo
+    environment:
+      MONGO_URI: "mongodb://docker_mongo:27017/myProjectDB"
+
+volumes:
+  mongo_data:
