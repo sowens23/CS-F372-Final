@@ -12,7 +12,7 @@ const mongoUri = process.env.MONGO_URI || 'mongodb://docker_mongo:27017/myProjec
 
 // Function to check password complexity
 function isPasswordComplex(password) {
-  const complexityRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,8}$/;
+  const complexityRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+\[\]{}\\|\/?,<.>;:'"`~])[A-Za-z\d!@#$%^&*()\-_=+\[\]{}\\|\/?,<.>;:'"`~]{8,}$/;
   return complexityRegex.test(password);
 }
 
@@ -32,7 +32,7 @@ async function handleLoginRequest(req, res) {
   
   // Basic checks
   if (!userName || !userPassword) {
-    return res.send('Login failed. Missing username or password.');
+    return res.json({ success: false, message: 'Login failed. Missing username or password.' });
   }
 
   // Connect to Mongo
@@ -52,7 +52,8 @@ async function handleLoginRequest(req, res) {
       
       // If account exists and password matches, log in
       if (existingUser.userPassword === hashedPassword) {
-        return res.send(`Welcome back, ${userName}!`);
+        req.session.user = userName; // Set session variable
+        return res.json({ success: true, message: 'Login successful. Redirecting to landing page...' });
 
       // If account exists but password doesn't match, increment failed attempts
       } else {
@@ -64,28 +65,27 @@ async function handleLoginRequest(req, res) {
         const attemptsRemaining = 3 - recentAttempts.length;
         if (attemptsRemaining > 0) {
           const attemptsMessage = attemptsRemaining === 2 ? 'two attempts remaining.' : 'one attempt remaining. Account will then be deleted';
-          return res.send(`Login failed. ${attemptsMessage}`);
-
-        // If account exists but password doesn't match and attempts exhausted, delete account
+          return res.json({ success: false, message: `Login failed. ${attemptsMessage}` });
         } else {
           await usersCollection.deleteOne({ userName });
-          return res.send('All attempts exhausted, account deleted.');
+          return res.json({ success: false, message: 'All attempts exhausted, account deleted.' });
         }
       }
       
-      // Create new user if doesn't exist
+    // Create new user if doesn't exist
     } else {
       if (!isPasswordComplex(userPassword)) {
-        return res.send('Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and 8 characters long.');
+        return res.json({ success: false, message: 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.' });
       }
       const salt = generateSalt();
       const hashedPassword = hashPassword(userPassword, salt);
       await usersCollection.insertOne({ userName, userPassword: hashedPassword, salt });
-      return res.send(`New user created: ${userName}`);
+      req.session.user = userName; // Set session variable
+      return res.json({ success: true, message: 'Account created. Redirecting to landing page...' });
     }
   } catch (error) {
     console.error('Error in handleLoginRequest:', error);
-    return res.status(500).send('Server error');
+    return res.status(500).json({ success: false, message: 'Server error' });
   } finally {
     // Make sure to close the client
     if (dbClient) {
