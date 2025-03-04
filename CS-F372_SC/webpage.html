@@ -6,11 +6,15 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <link rel="stylesheet" href="stylesheet.css">
+  <script src="scripts.js" defer></script>
 </head>
+
 <body>
   <h1>Login Screen</h1>
   <form id="loginForm" name="loginForm" action="/login" method="POST">
@@ -23,10 +27,7 @@
     <button type="submit" id="submitButton" name="submitButton">Submit</button>
   </form>
 
-  <!-- 
-    No JavaScript in HTML: 
-    script tags would go here if we had a separate client .js 
-    but the guidelines ask for 3 files only (HTML, server.js, stylesheet.css)
-  -->
+  <p id="message"></p>
 </body>
+
 </html>
