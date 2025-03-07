@@ -1,0 +1,105 @@
+<!-- 
+  Filename: Webpage.html
+  Function: Provides an HTML form for email, password, 
+            and a submit button. No inline JS or CSS.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>uMovie</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" href="logo.png" type="image/png"> -->
+  <link rel="stylesheet" href="stylesheet.css">
+</head>
+
+<body>
+<!--------------------------------->
+<!--- Header and Navigation Bar --->
+<!--------------------------------->
+
+<!-- Display active session data -->
+<div id="sessionStatus" class="session-status"></div>
+
+<!-------- This is the Nav Bar -->
+<ul>
+  <li id="homeTab" class="active"><a href="#" onclick="showPage('homePage', 'homeTab')">Homepage</a></li>
+  <li id="galleryTab"><a href="#" onclick="showPage('galleryPage', 'galleryTab')" class="nav-link">Gallery</a></li>
+  <li id="loginTab" style="float:right"><a href="#" onclick="showPage('loginPage', 'loginTab')" class="nav-link">Login</a></li>
+  <li id="accountTab" style="float:right"><a href="#" onclick="showPage('accountPage', 'accountTab')" class="nav-link">Account</a></li>
+</ul>
+
+<!--------- This is the Header -->
+<header>
+  <!-- <img src="logo.png" alt="uMovie Logo" width="250" height=auto> -->
+  <h1><b>uMovie</b></h1>
+</header>
+  
+<!--------- This is the Footer -->
+<footer>
+<p>sowens23@alaska.edu, ivyswenson@alaska.edu</p>
+<p>&copy;2025 uMovie</p>
+</footer>
+
+
+<!------------------------------->
+<!-------- Website Pages -------->
+<!------------------------------->
+
+<!--- This is Page 1, the Home Page -->
+<div id="homePage" class="content active">
+  <h2>Welcome to uMovie</h2>
+  <p>Please log in.</p>
+</div>
+<!--- End Page 1 -->
+
+<!--- This is Page 2, the Login Page -->
+<div id="loginPage" class="content">
+  <h2>Login</h2>
+  <p>Please login below</p>
+  <p id="accountLoginMessage"></p>
+  <form id="loginForm" name="loginForm" action="/accountLogin" method="POST">
+    <div class="formgroup">
+      <label for="loginEmail">Email:</label>
+      <input type="text" id="loginEmail" name="loginEmail">
+    </div>
+    <div class="formgroup">
+      <label for="loginPassword">Password:</label>
+      <input type="password" id="loginPassword" name="loginPassword">
+    </div>
+    <button type="submit" id="submitAccountLogin" name="submitAccountLogin">Submit</button>
+  </form>
+</div>
+<!--- End Page 2 -->
+
+<!--- This is Page 3, the Gallery Page -->
+<div id="galleryPage" class="content">
+  <h2>Gallery</h2>
+  <p>This is the gallery page.</p>
+</div>
+<!--- End Page 3 -->
+
+<!--- This is Page 4, the Account Page -->
+<div id="accountPage" class="content">
+  <h2>Account Information</h2>
+  <p id="accountUpdateMessage"></p>
+  <form id="updateForm" name="updateForm" action="/accountUpdate" method="POST">
+    <div class="formgroup">
+      <label for="updateEmail">Update Email</label>
+      <input type="text" id="updateEmail" name="updateEmail">
+    </div>
+    <div class="formgroup">
+      <label for="updatePassword">Update Password</label>
+      <input type="password" id="updatePassword" name="updatePassword">
+    </div>
+    <button type="submit" id="submitAccountUpdate" name="submitAccountUpdate">Submit</button>
+  </div>
+</div>
+<!--- End Page 4 -->
+
+<script src="scriptsClient.js"></script>
+
+</body>
+</html>
