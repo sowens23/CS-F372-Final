@@ -1,0 +1,144 @@
+/* 🌟 Banner Carousel Container */
+
+.banner-carousel {
+    width: 100%;
+    height: 720px;
+    overflow: hidden;
+    position: relative;
+  }
+
+ 
+  
+  /* 🌟 横向滑动轨道 */
+  .banner-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+    
+  }
+  
+  /* 🌟 单个 Slide */
+  .banner-slide {
+   flex: 0 0 100%;
+   position: relative;
+   height: 100%;
+  }
+  
+  /* ✅ Banner 背景图 */
+  .banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+   
+  }
+  
+  /* ✅ 文字与按钮区 */
+  .hero-banner {
+    position: absolute;
+    top: 20%;
+    left: 4rem;
+    z-index: 2;
+    color: white;
+    max-width: 600px;
+  }
+  
+  .hero-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  
+  /* ✅ 字体美化 */
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: #000000;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .hero-rank {
+    color: #000000;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  
+  /* ✅ 按钮样式 */
+  .hero-button {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .hero-button button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 9999px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* 🎬 Watch Now */
+  .watch-btn {
+    background-color: #e50914;
+    color: white;
+  }
+  
+  .watch-btn:hover {
+    background-color: #b50710;
+    transform: scale(1.05);
+  }
+  
+  /* ℹ Info Button */
+  .info-btn {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+  }
+  
+  .info-btn:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.05);
+  }
+  
+  /* ✅ 左右箭头按钮 */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 5;
+    transition: background 0.3s ease;
+  }
+  
+  .arrow:hover {
+    background: rgba(0, 0, 0, 0.6);
+  }
+  
+  .arrow.left {
+    left: 10px;
+  }
+  
+  .arrow.right {
+    right: 10px;
+  }
+
+.no-transition {
+  transition: none  !important;
+}
+  

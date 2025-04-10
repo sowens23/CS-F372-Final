@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="homepage"   href="../PublicFile/index_PublicHeader.html">
+    <link rel="stylesheet" href="../PublicFile/PublicHeader.css" />
+    <link rel="stylesheet" href="./ContentEditorStyle.css">
+    <script src="loginEditor.js"></script>
+</head>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="header-logo">
+        <img src="../HomeTemplate/HomePagePictures/UmovieLogo.png" alt="MovieLogo" />
+      </div>
+    </div>
+  
+      <!-- Navigation -->
+  <div class="header-right">
+    <nav class="nav">
+      <a href="../HomeTemplate/index_HomePage.html">Home</a>
+      <a href="#">Movies</a>
+      <a href="#">Notification</a>
+      <a href="#">History</a>
+      <div class="dropdown">
+        <button class="dropbtn">Account ▾</button>
+        <div class="dropdown-content">
+          <a href="../Viewer/index_ViewerLogin.html">Viewer Login</a>
+          <a href="index_LoginEditor.html">Content Editor Login</a>
+          <a href="/login-manager.html">Marketing Manager Login</a>
+        </div>
+      </div>
+    </nav>
+      <input type="text" placeholder="Search movies..." class="search-bar" />
+  
+  </div>
+  </header>
+
+<body>
+    <div class="form-box" id="login">
+      <h2> Editor Login</h2>
+      <form>
+        <input type="text" placeholder="User Name" required />
+        <input type="password" placeholder="Password" required />
+        <div class="checkbox-area">
+          <label><input type="checkbox" /> Remember me</label>
+          <a href="#" class="forgot">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+    </div>
+
+    <div class="form-box hidden" id="register">
+      <h2>Editor Register</h2>
+      <form>
+        <input type="text" placeholder="User Name" required />
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <div class="checkbox-area">
+          <label>
+            <input type="checkbox" />
+            I agree to the <a href="#">terms & conditions</a>
+          </label>
+        </div>
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+  </div>
+ </body>
+</html>
+ 

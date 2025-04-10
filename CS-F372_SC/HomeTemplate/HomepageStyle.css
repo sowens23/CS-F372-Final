@@ -1,0 +1,224 @@
+body {
+    background-color: rgb(0, 0, 0);
+    color: whitesmoke;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Header */
+  .header {
+    background-color: #000000;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    height: 40px;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-logo img {
+    height: 100px;
+    object-fit: contain;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .nav a:hover {
+    color: #df0606;
+  }
+  
+  /* Search Bar */
+  .search-bar {
+    margin-left: auto;
+    max-width: 160px;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  
+  
+  /* Navigation */
+  .nav {
+    background-color: #000000;
+    padding: 0.75rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .nav a:hover {
+    color: #df0606;
+  }
+
+  /* 外部容器 */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* 按钮样式：像其他导航链接一样 */
+.dropbtn {
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* 下拉菜单样式 */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.9); /* 深色背景 */
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  z-index: 999;
+  border-radius: 6px;
+}
+
+/* 菜单项样式 */
+.dropdown-content a {
+  color: white;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Hover 显示 */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+  
+  /* Page Title + Sort */
+  .page-header {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .page-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .sort-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .sort-controls select {
+    border: 1px solid #d1d5db;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  /* Movie Grid */
+  .movie-grid {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  
+  /* Movie Card */
+ .movie-card {
+  background-color: rgba(0, 0, 0, 0.6); /* ✅ 半透明黑 */
+  backdrop-filter: blur(6px);
+  color: white;                        /* ✅ 字体白色 */
+  border-radius: 12px;                /* ✅ 圆角 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* ✅ 阴影 */
+  padding: 1rem;
+  width: 200px; /* 可自定 */
+  object-fit: cover;
+}
+ .movie-card img {
+  width: 100%;
+  height: 300px;
+  width: 300px;
+  border-radius: 4px;
+}
+
+  
+  .movie-card h3 {
+    margin-top: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  
+  .movie-card p {
+    font-size: 0.875rem;
+    color: #ffffff;
+  }
+  
+  .movie-card .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  
+  .movie-card .play-button {
+    background-color: #2563eb;
+    color: white;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .movie-card .like-buttons {
+    display: flex;
+    gap: 0.25rem;
+  }
+  
+  .movie-card .like-buttons button {
+    font-size: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .movie-card .like-buttons button:first-child {
+    color: #10b981; /* green-500 */
+  }
+  
+  .movie-card .like-buttons button:last-child {
+    color: #ef4444; /* red-500 */
+  }
+  

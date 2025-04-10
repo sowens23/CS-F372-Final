@@ -2,16 +2,15 @@
   "name": "cs-f372_sc",
   "version": "1.0.0",
   "main": "server.js",
-  
   "scripts": {
     "start": "node server.js"
   },
-
   "dependencies": {
-    "express": "^4.21.2",
-    "mongodb": "^4.1.0",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "express-session": "^1.17.2",
-    "body-parser": "^1.19.0"
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mongodb": "^4.17.2"
   }
 }
