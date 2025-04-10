@@ -1,18 +1,17 @@
-# Build: docker-compose up --build -d
-# -d flag runs the containers in the background.
-# Stop: docker-compose down
-
-# Access MongoDB: docker-compose exec docker_mongo mongosh
-# Access Node.js: docker-compose exec docker_node bash
-
-# Print startup logs in docker_node: docker-compose logs docker_node
-
-# This starts the MongoDB and Node.js containers in the background.
+# Filename: docker-compose.yaml
+# Purpose: This is the docker-compose file that will be used to build the MongoDB and Node.js containers.
+# Functions:
+#   Build Containers in background: docker-compose up --build -d
+#   Stop Containers: docker-compose down
+#   Access MongoDB: docker-compose exec docker_mongo mongosh
+#   Access Node.js: docker-compose exec docker_node bash
+#   Print docker_node logs: docker-compose logs docker_node
 
 name: CS-F372_DockerBuild
 services:
   docker_mongo:
-  # Use the latest version of MongoDB docker image, no need for custom Dockerfile
+  # Use the latest version of MongoDB docker image, 
+  # no need for custom Dockerfile
     image: mongo:6.0
     container_name: docker_mongo
     volumes:

@@ -1,3 +1,6 @@
+# Filename: Dockerfile.node
+# Purpose: Dockerfile for Node.js application
+
 # Use Node image (version up to you)
 FROM node:18-alpine
 
