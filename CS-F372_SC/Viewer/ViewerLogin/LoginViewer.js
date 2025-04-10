@@ -16,7 +16,7 @@ document.getElementById('login-button').addEventListener('click', async (event) 
     alert(data.message);
     if (data.success) {
       localStorage.setItem("currentUserEmail", email);
-      window.location.href = '../ViewerHomePage/index_ViewerHomePage.html';
+      window.location.href = '../../HomeTemplate/index_HomePage.html';
     }
   });
   
