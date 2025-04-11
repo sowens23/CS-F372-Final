@@ -1,4 +1,5 @@
 // db.js
+// This is from Project2-Spencer
 const { MongoClient } = require('mongodb');
 
 const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/moviehub'; // 本地开发 & Docker 都支持！
