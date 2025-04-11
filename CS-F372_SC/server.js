@@ -30,10 +30,9 @@ app.post('/api/account/update', auth.update);
 app.post('/api/account/favorite/add', auth.addFavorites);
 app.post('/api/account/favorite/get', auth.getFavorites);
 
-app.post('/api/account/like/add', auth.addLikedMovie);
-app.post('/api/account/like/get', auth.getLikedMovies);
+app.post('/api/account/like-dislike', auth.likeDislikeMovie);
 
-app.post('/api/account/dislike/add', auth.addDislikedMovie);
+app.post('/api/account/like/get', auth.getLikedMovies);
 app.post('/api/account/dislike/get', auth.getDislikedMovies);
 
 

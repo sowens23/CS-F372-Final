@@ -242,3 +242,53 @@ exports.getDislikedMovies = async (req, res) => {
   res.json({ success: true, dislikedMovies: user.dislikedMovies || []  });
 };
 
+// ======================== TOGGLE LIKE / DISLIKE API ========================
+exports.likeDislikeMovie = async (req, res) => {
+  const { email, movieId, action } = req.body;
+
+  if (!email || !movieId || !["like", "dislike", "clear"].includes(action)) {
+    return res.status(400).json({ success: false, message: "Invalid input" });
+  }
+
+  const db = await connectDB();
+  const users = db.collection("users");
+
+  try {
+    const user = await users.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    if (action === "like") {
+      await users.updateOne(
+        { email },
+        {
+          $addToSet: { likedMovies: movieId },
+          $pull: { dislikedMovies: movieId }
+        }
+      );
+    } else if (action === "dislike") {
+      await users.updateOne(
+        { email },
+        {
+          $addToSet: { dislikedMovies: movieId },
+          $pull: { likedMovies: movieId }
+        }
+      );
+    } else if (action === "clear") {
+      await users.updateOne(
+        { email },
+        {
+          $pull: {
+            likedMovies: movieId,
+            dislikedMovies: movieId
+          }
+        }
+      );
+    }
+
+    res.json({ success: true, message: `Action '${action}' applied.` });
+  } catch (err) {
+    console.error("❌ Error in likeDislikeMovie:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+

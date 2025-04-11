@@ -96,65 +96,84 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ======================== Like ========================
-  document.querySelectorAll(".like-buttons button:nth-child(1)").forEach((btn) => {
-    btn.addEventListener("click", async (e) => {
-      const card = e.target.closest(".movie-card");
-      const movieId = card.getAttribute("data-movie");
-      const userEmail = localStorage.getItem("currentUserEmail");
-
-      if (!userEmail) return alert("⚠ Please log in");
-
-      if (localStorage.getItem(`disliked_${movieId}`)) return alert("❗ Already disliked");
-      if (localStorage.getItem(`liked_${movieId}`)) return alert("❗ Already liked");
-
-      const res = await fetch("http://localhost:3000/api/account/like/add", {
+  function updateReactionUI(card, liked, disliked) {
+    const likeBtn = card.querySelector(".like-buttons button:nth-child(1)");
+    const dislikeBtn = card.querySelector(".like-buttons button:nth-child(2)");
+  
+    if (liked) {
+      likeBtn.classList.add("selected");
+      dislikeBtn.classList.remove("selected");
+    } else if (disliked) {
+      dislikeBtn.classList.add("selected");
+      likeBtn.classList.remove("selected");
+    } else {
+      likeBtn.classList.remove("selected");
+      dislikeBtn.classList.remove("selected");
+    }
+  }
+  
+  async function handleReaction(movieId, action, card) {
+    const userEmail = localStorage.getItem("currentUserEmail");
+    if (!userEmail) return alert("⚠ Please log in");
+  
+    try {
+      const res = await fetch("http://localhost:3000/api/account/like-dislike", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userEmail, movieId }),
+        body: JSON.stringify({ email: userEmail, movieId, action })
       });
+  
       const data = await res.json();
       if (data.success) {
-        localStorage.setItem(`liked_${movieId}`, "true");
-        btn.disabled = true;
-        btn.style.opacity = 0.5;
-        const sibling = card.querySelector(".like-buttons button:nth-child(2)");
-        sibling.disabled = true;
-        sibling.style.opacity = 0.5;
+        // 同步本地状态（你可以也用服务器返回值来判断）
+        if (action === "like") {
+          localStorage.setItem(`liked_${movieId}`, "true");
+          localStorage.removeItem(`disliked_${movieId}`);
+        } else if (action === "dislike") {
+          localStorage.setItem(`disliked_${movieId}`, "true");
+          localStorage.removeItem(`liked_${movieId}`);
+        } else {
+          localStorage.removeItem(`liked_${movieId}`);
+          localStorage.removeItem(`disliked_${movieId}`);
+        }
+  
+        updateReactionUI(card, action === "like", action === "dislike");
+        alert(data.message);
+      } else {
+        alert(data.message || "Failed to update reaction");
       }
-      alert(data.message);
+    } catch (err) {
+      console.error(err);
+      alert("❌ Request failed");
+    }
+  }
+  
+  // 绑定点击事件
+  document.querySelectorAll(".movie-card").forEach(card => {
+    const movieId = card.getAttribute("data-movie");
+    const likeBtn = card.querySelector(".like-buttons button:nth-child(1)");
+    const dislikeBtn = card.querySelector(".like-buttons button:nth-child(2)");
+  
+    likeBtn.addEventListener("click", () => {
+      const alreadyLiked = localStorage.getItem(`liked_${movieId}`);
+      const action = alreadyLiked ? "clear" : "like";
+      handleReaction(movieId, action, card);
     });
-  });
-
-  // ======================== Dislike ========================
-  document.querySelectorAll(".like-buttons button:nth-child(2)").forEach((btn) => {
-    btn.addEventListener("click", async (e) => {
-      const card = e.target.closest(".movie-card");
-      const movieId = card.getAttribute("data-movie");
-      const userEmail = localStorage.getItem("currentUserEmail");
-
-      if (!userEmail) return alert("⚠ Please log in");
-
-      if (localStorage.getItem(`liked_${movieId}`)) return alert("❗ Already liked");
-      if (localStorage.getItem(`disliked_${movieId}`)) return alert("❗ Already disliked");
-
-      const res = await fetch("http://localhost:3000/api/account/dislike/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userEmail, movieId }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        localStorage.setItem(`disliked_${movieId}`, "true");
-        btn.disabled = true;
-        btn.style.opacity = 0.5;
-        const sibling = card.querySelector(".like-buttons button:nth-child(1)");
-        sibling.disabled = true;
-        sibling.style.opacity = 0.5;
-      }
-      alert(data.message);
+  
+    dislikeBtn.addEventListener("click", () => {
+      const alreadyDisliked = localStorage.getItem(`disliked_${movieId}`);
+      const action = alreadyDisliked ? "clear" : "dislike";
+      handleReaction(movieId, action, card);
     });
+  
+    // 初始 UI 设置
+    updateReactionUI(
+      card,
+      !!localStorage.getItem(`liked_${movieId}`),
+      !!localStorage.getItem(`disliked_${movieId}`)
+    );
   });
+  
 
 
   // ======================== Per-Movie Clear Like/Dislike ========================
