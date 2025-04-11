@@ -1,23 +1,23 @@
-# Filename: Dockerfile.node
-# Purpose: Dockerfile for Node.js application
+# Filename: Dockerfile
+# Purpose: Dockerfile for Node.js application in the MovieHub project
 
-# Use Node image (version up to you)
+# Use official lightweight Node.js image
 FROM node:18-alpine
 
-# Create a working directory inside the container
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy only package.json/package-lock.json first
+# Copy dependency files first to take advantage of Docker layer caching
 COPY package*.json ./
 
-# Install dependencies
+# Install Node.js dependencies
 RUN npm install
 
-# Copy the rest of your code
+# Copy the entire project into the container
 COPY . .
 
-# Expose the port (if your Node.js application runs on port 3000)
-EXPOSE 3000 
+# Expose the port your Node.js app runs on
+EXPOSE 3000
 
-# Start the server
+# Command to start the Node.js server
 CMD ["node", "server.js"]

@@ -1,6 +1,7 @@
 // authController.js
 const connectDB = require('./db');
 const crypto = require('crypto');
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
 function hash(password, salt) {
   return crypto.createHash('sha256').update(password + salt).digest('hex');
@@ -22,6 +23,13 @@ exports.register = async (req, res) => {
     return res.json({ success: false, message: 'Email already registered' });
   }
 
+  if (!strongPasswordRegex.test(password)) {
+    return res.json({
+      success: false,
+      message: "Password must include uppercase, lowercase, number, special character, and be at least 8 characters long."
+    });
+  }
+
   const salt = generateSalt();
   const hashed = hash(password, salt);
 
@@ -41,6 +49,7 @@ exports.login = async (req, res) => {
   }
 
   const hashed = hash(password, user.salt);
+
   if (hashed === user.password) {
     res.json({ success: true, message: 'Login successful' });
   } else {
@@ -137,6 +146,11 @@ exports.getFavorites = async (req, res) => {
       return res.json({ success: false, message: "User not found" });
     }
 
+    if (user.dislikedMovies && user.dislikedMovies.includes(movieId)) {
+      return res.json({ success: false, message: "You already disliked this movie" });
+    }
+    
+
     const likedMovies = user.likedMovies || [];
 
     if (likedMovies.includes(movieId)) {
@@ -194,6 +208,11 @@ exports.addDislikedMovie = async (req, res) => {
       return res.json({ success: false, message: "Already disliked" });
     }
 
+    if (user.likedMovies && user.likedMovies.includes(movieId)) {
+      return res.json({ success: false, message: "You already liked this movie" });
+    }
+    
+
     await users.updateOne(
       { email },
       { $push: { dislikedMovies: movieId } }
@@ -222,3 +241,4 @@ exports.getDislikedMovies = async (req, res) => {
 
   res.json({ success: true, dislikedMovies: user.dislikedMovies || []  });
 };
+

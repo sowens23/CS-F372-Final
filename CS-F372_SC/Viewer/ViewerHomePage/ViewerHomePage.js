@@ -20,7 +20,6 @@ window.addEventListener("DOMContentLoaded", () => {
       if (target === "history") renderHistory();
       if (target === "liked") renderLikedMovies();
       if (target === "disliked") loadDislikedMovies();
-
     });
   });
 
@@ -41,7 +40,8 @@ window.addEventListener("DOMContentLoaded", () => {
       feedbackForm.reset();
     });
   }
-});
+
+  
 
 /* My Fav */
 async function renderFavorites() {
@@ -90,7 +90,6 @@ async function renderFavorites() {
 }
 
 /* Liked Movies */
-
 async function renderLikedMovies() {
   console.log("👍 正在加载你喜欢的电影...");
 
@@ -108,7 +107,7 @@ async function renderLikedMovies() {
     const res = await fetch("http://localhost:3000/api/account/like/get", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }), // ✅ 确保这里 email 是有值的
+      body: JSON.stringify({ email }),
     });
 
     const data = await res.json();
@@ -168,7 +167,7 @@ async function loadDislikedMovies() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
-    
+
     const data = await res.json();
 
     if (!data.dislikedMovies || data.dislikedMovies.length === 0) {
@@ -179,7 +178,7 @@ async function loadDislikedMovies() {
     data.dislikedMovies.forEach(movieId => {
       const movie = allMovies[movieId];
       if (!movie) return;
-  
+
       const card = document.createElement("div");
       card.className = "movie-card";
       card.innerHTML = `
@@ -193,17 +192,15 @@ async function loadDislikedMovies() {
       card.querySelector(".play-button").addEventListener("click", () => {
         window.location.href = `../../Viewer/ViewerPlayer/index_Player.html?movie=${movieId}`;
       });
-  
+
       container.appendChild(card);
     });
-  
+
   } catch (err) {
     console.error("❌ Failed to load disliked movies", err);
     container.innerHTML = "<p>Error loading disliked movies.</p>";
   }
 }
-
-
 
 /* Viewed History */
 function renderHistory() {
@@ -223,3 +220,4 @@ function renderHistory() {
     historyList.appendChild(li);
   });
 }
+});

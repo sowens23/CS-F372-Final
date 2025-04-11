@@ -1,6 +1,7 @@
 // db.js
 const { MongoClient } = require('mongodb');
-const uri = 'mongodb://localhost:27017'; // 或你自己的 Mongo URI
+
+const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/moviehub'; // 本地开发 & Docker 都支持！
 
 const client = new MongoClient(uri);
 
@@ -8,7 +9,7 @@ async function connectDB() {
   try {
     await client.connect();
     console.log('✅ Connected to MongoDB!');
-    return client.db('moviehub'); // 你自己起的 DB 名字
+    return client.db(); // 会自动从 URI 中取 moviehub
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
   }

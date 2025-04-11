@@ -36,6 +36,14 @@ app.post('/api/account/like/get', auth.getLikedMovies);
 app.post('/api/account/dislike/add', auth.addDislikedMovie);
 app.post('/api/account/dislike/get', auth.getDislikedMovies);
 
+
+
+
+// ================= Default Webpage to jump to =================
+app.get('/', (req, res) => {
+  res.redirect('/Viewer/ViewerLogin/index_ViewerLogin.html');
+});
+
 // ================= 启动服务 =================
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);

@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
   const sortSelect = document.getElementById("sort");
   const genreSelect = document.getElementById("genre-filter");
@@ -47,8 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const card = e.target.closest(".movie-card");
       const movieId = card?.getAttribute("data-movie");
 
-      console.log("🎬 获取到的 movieId 是: ", movieId);
-
       if (movieId) {
         window.location.href = `../../Viewer/ViewerPlayer/index_Player.html?movie=${movieId}`;
       } else {
@@ -57,18 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // ======================== Favorite Feature (Backend) ========================
+  // ======================== Favorite Feature ========================
   document.querySelectorAll(".favorite-btn").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const card = e.target.closest(".movie-card");
       const movieId = card.getAttribute("data-movie");
-
-      if (!movieId) {
-        alert("❗ No movie ID found");
-        return;
-      }
-
       const userEmail = localStorage.getItem("currentUserEmail");
+
       if (!userEmail) {
         alert("⚠ Please log in to add favorites");
         return;
@@ -80,87 +74,125 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: userEmail, movieId }),
         });
-
         const data = await res.json();
         alert(data.message);
       } catch (err) {
-        console.error("❌ Favorite add failed", err);
         alert("Failed to add to favorites");
       }
     });
   });
 
-  // ======================== Liked Movies ========================
+  // ======================== Set Like/Dislike State ========================
+  document.querySelectorAll(".movie-card").forEach(card => {
+    const movieId = card.getAttribute("data-movie");
+    const likeBtn = card.querySelector(".like-buttons button:nth-child(1)");
+    const dislikeBtn = card.querySelector(".like-buttons button:nth-child(2)");
+
+    if (localStorage.getItem(`liked_${movieId}`) || localStorage.getItem(`disliked_${movieId}`)) {
+      likeBtn.disabled = true;
+      dislikeBtn.disabled = true;
+      likeBtn.style.opacity = 0.5;
+      dislikeBtn.style.opacity = 0.5;
+    }
+  });
+
+  // ======================== Like ========================
   document.querySelectorAll(".like-buttons button:nth-child(1)").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const card = e.target.closest(".movie-card");
       const movieId = card.getAttribute("data-movie");
       const userEmail = localStorage.getItem("currentUserEmail");
 
-      if (!userEmail) {
-        alert("⚠ Please log in to like movies");
-        return;
-      }
+      if (!userEmail) return alert("⚠ Please log in");
 
-      try {
-        const res = await fetch("http://localhost:3000/api/account/like/add", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail, movieId }),
-        });
+      if (localStorage.getItem(`disliked_${movieId}`)) return alert("❗ Already disliked");
+      if (localStorage.getItem(`liked_${movieId}`)) return alert("❗ Already liked");
 
-        const data = await res.json();
-        alert(data.message);
-      } catch (err) {
-        console.error("❌ Like failed", err);
-        alert("Failed to like movie");
+      const res = await fetch("http://localhost:3000/api/account/like/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail, movieId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem(`liked_${movieId}`, "true");
+        btn.disabled = true;
+        btn.style.opacity = 0.5;
+        const sibling = card.querySelector(".like-buttons button:nth-child(2)");
+        sibling.disabled = true;
+        sibling.style.opacity = 0.5;
       }
+      alert(data.message);
     });
   });
 
-  // ======================== Disliked  Movie =========================
-
+  // ======================== Dislike ========================
   document.querySelectorAll(".like-buttons button:nth-child(2)").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const card = e.target.closest(".movie-card");
       const movieId = card.getAttribute("data-movie");
       const userEmail = localStorage.getItem("currentUserEmail");
-  
-      if (!userEmail) {
-        alert("⚠ Please log in to dislike movies");
-        return;
+
+      if (!userEmail) return alert("⚠ Please log in");
+
+      if (localStorage.getItem(`liked_${movieId}`)) return alert("❗ Already liked");
+      if (localStorage.getItem(`disliked_${movieId}`)) return alert("❗ Already disliked");
+
+      const res = await fetch("http://localhost:3000/api/account/dislike/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail, movieId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem(`disliked_${movieId}`, "true");
+        btn.disabled = true;
+        btn.style.opacity = 0.5;
+        const sibling = card.querySelector(".like-buttons button:nth-child(1)");
+        sibling.disabled = true;
+        sibling.style.opacity = 0.5;
       }
-  
-      try {
-        const res = await fetch("http://localhost:3000/api/account/dislike/add", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail, movieId }),
-        });
-  
-        const data = await res.json();
-        alert(data.message);
-      } catch (err) {
-        console.error("❌ Dislike failed", err);
-        alert("Failed to dislike movie");
-      }
+      alert(data.message);
     });
   });
 
-  // ======================== Search Bar ========================
+
+  // ======================== Per-Movie Clear Like/Dislike ========================
+document.querySelectorAll(".clear-reaction-btn").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const card = e.target.closest(".movie-card");
+    const movieId = card.getAttribute("data-movie");
+
+    if (!movieId) return;
+
+    const confirmClear = confirm(`Clear reactions for movie: ${movieId}?`);
+    if (!confirmClear) return;
+
+    localStorage.removeItem(`liked_${movieId}`);
+    localStorage.removeItem(`disliked_${movieId}`);
+
+    // 重新启用按钮
+    const likeBtn = card.querySelector(".like-buttons button:nth-child(1)");
+    const dislikeBtn = card.querySelector(".like-buttons button:nth-child(2)");
+    if (likeBtn && dislikeBtn) {
+      likeBtn.disabled = false;
+      dislikeBtn.disabled = false;
+      likeBtn.style.opacity = 1;
+      dislikeBtn.style.opacity = 1;
+    }
+
+    alert(`Reactions cleared for ${movieId}`);
+  });
+});
+
+  // ======================== Search ========================
   const searchInput = document.querySelector('.search-bar');
   const movieCards = document.querySelectorAll('.movie-card');
-
   searchInput.addEventListener('input', function () {
     const searchTerm = searchInput.value.toLowerCase();
-
     movieCards.forEach(card => {
       const title = card.querySelector('h3').textContent.toLowerCase();
-      if (title.includes(searchTerm)) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
+      card.style.display = title.includes(searchTerm) ? 'block' : 'none';
     });
   });
 
@@ -173,39 +205,23 @@ document.addEventListener("DOMContentLoaded", function () {
       originalOrder.forEach(card => movieGrid.appendChild(card));
       return;
     }
-
     if (option === "Alphabetical") {
-      cards.sort((a, b) => {
-        const titleA = a.querySelector("h3").textContent.toLowerCase();
-        const titleB = b.querySelector("h3").textContent.toLowerCase();
-        return titleA.localeCompare(titleB);
-      });
+      cards.sort((a, b) => a.querySelector("h3").textContent.localeCompare(b.querySelector("h3").textContent));
     }
-
     if (option === "Genre") {
-      cards.sort((a, b) => {
-        const genreA = a.querySelector("p").textContent.replace("Genre:", "").trim().toLowerCase();
-        const genreB = b.querySelector("p").textContent.replace("Genre:", "").trim().toLowerCase();
-        return genreA.localeCompare(genreB);
-      });
+      cards.sort((a, b) =>
+        a.querySelector("p").textContent.localeCompare(b.querySelector("p").textContent));
     }
-
     cards.forEach(card => movieGrid.appendChild(card));
   });
 
-  // ======================== Genre Filter（✅已放进来了） ========================
+  // ======================== Genre Filter ========================
   genreSelect.addEventListener("change", function () {
     const selectedGenre = genreSelect.value.toLowerCase();
-    const cards = document.querySelectorAll(".movie-card");
-
-    cards.forEach(card => {
-      const genreText = card.querySelector("p").textContent.replace("Genre:", "").trim().toLowerCase();
-      if (selectedGenre === "all" || genreText.includes(selectedGenre)) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
+    document.querySelectorAll(".movie-card").forEach(card => {
+      const genre = card.querySelector("p").textContent.toLowerCase();
+      card.style.display = (selectedGenre === "all" || genre.includes(selectedGenre)) ? "block" : "none";
     });
   });
 
-}); //  所有功能代码都放在这个大括号内了
+});
