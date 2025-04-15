@@ -12,6 +12,7 @@
 #   - MongoDB is accessible at: mongodb://mongo:27017/moviehub
 #   - Node.js app will run at:  http://localhost:3000
 #   - MongoDB data is persisted using named volume: mongo-data
+#   - Access website @ http://localhost:3000/HomeTemplate/index_HomePage.html#
 
 version: "3.8"
 
