@@ -225,7 +225,7 @@ exports.addDislikedMovie = async (req, res) => {
   }
 };
 
-// ======================== GET LIKED API ========================
+// ======================== GET DISLIKED API ========================
 
 exports.getDislikedMovies = async (req, res) => {
   const { email } = req.body;
