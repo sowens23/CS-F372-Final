@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MovieHub - Home</title>
-  <link rel="stylesheet" href="HomepageStyle.css" />
-  <link rel="stylesheet" href="HomeBanner.css" />
-  <script src="./HomePage.js"></script>
+  <link rel="stylesheet" href="MovieEditor.css" />
+  <link rel="stylesheet" href="../HomeTemplate/HomeBanner.css" />
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
   
 
@@ -18,15 +17,15 @@
 <header class="header">
   <div class="header-left">
     <div class="header-logo">
-      <img src="./HomePagePictures/UmovieLogo.png" alt="MovieLogo" />
+      <img src="../HomeTemplate/HomePagePictures/UmovieLogo.png" alt="MovieLogo" />
     </div>
   </div>
 
     <!-- Navigation -->
 <div class="header-right">
   <nav class="nav">
-    <a href="index_HomePage.html">Home</a>
-    <a href="../MovieEditor/index_MovieEditor.html">Movies</a>
+    <a href="../HomeTemplate/index_HomePage.html">Home</a>
+    <a href="./index_MovieEditor.html">Movies</a>
     <a href="#">Notification</a>
     <a href="#">History</a>
     <div class="dropdown">
@@ -53,7 +52,7 @@
 
     <!-- Slide 1 -->
     <div class="banner-slide">
-      <img src="./MoviePosters/banners/banner1.jpg" class="banner-image" />
+      <img src="../HomeTemplate/MoviePosters/banners/banner1.jpg" class="banner-image" />
       <section class="hero-banner">
         <div class="hero-content">
           <h1 class="hero-title">Mufasa: The Lion King</h1>
@@ -69,7 +68,7 @@
 
    <!-- Slide 2 -->
    <div class="banner-slide">
-      <img src="./MoviePosters/banners/banner2.jpg" class="banner-image" />
+      <img src="../HomeTemplate/MoviePosters/banners/banner2.jpg" class="banner-image" />
 
     <section class="hero-banner">
       <div class="hero-content">
@@ -85,7 +84,7 @@
   
   <!-- Slide 3 -->
   <div class="banner-slide">
-    <img src="./MoviePosters/banners/banner3.jpg" class="banner-image" />
+    <img src="../HomeTemplate/MoviePosters/banners/banner3.jpg" class="banner-image" />
     <section class="hero-banner">
       <div class="hero-content">
         <h1 class="hero-title">SnowWhite</h1>
@@ -100,7 +99,7 @@
   
   <!-- Slide 4 -->
   <div class="banner-slide">
-    <img src="./MoviePosters/banners/banner4.jpg" class="banner-image" />
+    <img src="../HomeTemplate/MoviePosters/banners/banner4.jpg" class="banner-image" />
     <section class="hero-banner">
       <div class="hero-content">
         <h1 class="hero-title">Moana 2</h1>
@@ -115,7 +114,7 @@
 
   <!-- Slide 5 -->
   <div class="banner-slide">
-    <img src="./MoviePosters/banners/banner5.jpg" class="banner-image" />
+    <img src="../HomeTemplate/MoviePosters/banners/banner5.jpg" class="banner-image" />
     <section class="hero-banner">
       <div class="hero-content">
         <h1 class="hero-title">Sonic the hedgehog 3</h1>
@@ -157,12 +156,11 @@
       <p>Genre: Action</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
-
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -174,11 +172,11 @@
       <p>Genre: History</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -189,11 +187,11 @@
       <p>Genre: Adventure</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -204,11 +202,11 @@
       <p>Genre: Family/Sci-fi</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+          <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -219,11 +217,11 @@
       <p>Genre: Faimly/Sci-fi </p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -234,11 +232,11 @@
       <p>Genre: Documentary/Musical </p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -249,11 +247,11 @@
       <p>Genre: Spy thriller</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -264,11 +262,11 @@
       <p>Genre: Thriller/Mystery</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -279,11 +277,11 @@
       <p>Genre: Adventure/Action</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -294,11 +292,11 @@
       <p>Genre: Family/Fantasy</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -309,11 +307,11 @@
       <p>Genre: Sci-fi/Adventure</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -324,11 +322,11 @@
       <p>Genre: Family</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -339,11 +337,11 @@
       <p>Genre: Action/Adventure</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -354,11 +352,11 @@
       <p>Genre: Fantasy/Action</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -369,11 +367,11 @@
       <p>Genre: Sci-fi/Adventure</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -384,11 +382,11 @@
       <p>Genre: Adventure/Sci-fi </p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -399,11 +397,11 @@
       <p>Genre: Sci-fi/Adventure</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -414,11 +412,11 @@
       <p>Sci-fi/Thriller</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -429,11 +427,11 @@
       <p>Genre: Action/Thriller</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -444,11 +442,11 @@
       <p>Genre: Historical drama</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -459,11 +457,11 @@
       <p>Genre: Action</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -474,11 +472,11 @@
       <p>Genre:  Adventure/Musical</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -489,11 +487,11 @@
       <p>Genre: Family</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -504,11 +502,11 @@
       <p>Genre:  Sci-fi/Adventure</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -519,11 +517,11 @@
       <p>Genre: Action/Adventure</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -534,11 +532,11 @@
       <p>Genre: Action/Sci-fi </p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -549,11 +547,11 @@
       <p>Genre: Thriller/Crime </p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -564,11 +562,11 @@
       <p>Genre: Horror/Mystery</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -579,11 +577,11 @@
       <p>Genre: Drama</p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
@@ -594,16 +592,28 @@
       <p>Genre: Action/Sci-fi </p>
       <div class="controls">
         <button class="play-button">▶ Play</button>
-        <div class="like-buttons">
-          <button>👍</button>
-          <button>👎</button>
-          <button class="favorite-btn">➕</button>
-          <button class="clear-reaction-btn">❌</button>
+        <div class="editor-buttons">
+          <button class="edit-btn">Edit</button>
+          <button class="poster-btn">Upload Poster</button>
+          <button class="hide-btn">Hide</button>
+          <button class="remove-btn">Remove</button>
         </div>
       </div>
     </div>
     <!-- Repeat more movie-card blocks as needed -->
   </main>
   
+<!-- Editor Window -->
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<div class="edit-modal" id="editModal">
+  <h3>Edit Movie Info</h3>
+  <input type="text" id="editTitle" placeholder="Movie Title" />
+  <input type="text" id="editGenre" placeholder="Genre" />
+  <input type="text" id="editPath" placeholder="Video Path" />
+  <button id="saveEdit">Save</button>
+</div>
 </body>
+
+<script src="MovieEditor.js"></script>
 </html>

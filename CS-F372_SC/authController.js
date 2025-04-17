@@ -14,7 +14,7 @@ function generateSalt() {
 // Register.js
 exports.register = async (req, res) => {
   console.log("Received request", req.body);
-  const { email, password } = req.body;
+  const { email, password,role } = req.body;
   const db = await connectDB();
   const users = db.collection('users');
 
@@ -33,17 +33,17 @@ exports.register = async (req, res) => {
   const salt = generateSalt();
   const hashed = hash(password, salt);
 
-  await users.insertOne({ email, password: hashed, salt });
+  await users.insertOne({ email, password: hashed, salt, role: role || "viewer" });
   res.json({ success: true, message: 'Registration successful' });
 };
 
 // Login.js 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password,role } = req.body;
   const db = await connectDB();
   const users = db.collection('users');
 
-  const user = await users.findOne({ email });
+  const user = await users.findOne({ email,role });
   if (!user) {
     return res.json({ success: false, message: 'Email not found' });
   }
