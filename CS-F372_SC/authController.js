@@ -348,3 +348,30 @@ exports.loginEditor = async (req, res) => {
     res.json({ success: false, message: 'Wrong password' });
   }
 };
+
+
+
+// ======================== Add new movie card ========================
+exports.addMovie = async (req, res) => {
+  const { title, genre, videoPath } = req.body;
+
+  if (!title || !genre || !videoPath) {
+    return res.json({ success: false, message: 'Missing required fields' });
+  }
+
+  const db = await connectDB();
+  const movies = db.collection('movies');
+
+  try {
+    await movies.insertOne({
+      title,
+      genre,
+      videoPath,
+      createdAt: new Date() 
+    });
+    res.json({ success: true, message: 'Movie added successfully' });
+  } catch (err) {
+    console.error('❌ Error adding movie:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};

@@ -39,6 +39,7 @@ app.post('/api/account/dislike/get', auth.getDislikedMovies);
 app.post('/api/editor/login', auth.loginEditor);
 app.post('/api/editor/register', auth.registerEditor);
 
+app.post('/api/editor/add-movie', auth.addMovie);
 
 
 
