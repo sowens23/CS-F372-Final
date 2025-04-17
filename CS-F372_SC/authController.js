@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
   const salt = generateSalt();
   const hashed = hash(password, salt);
 
-  await users.insertOne({ email, password: hashed, salt, role: role || "viewer" });
+  await users.insertOne({ email, password: hashed, salt});
   res.json({ success: true, message: 'Registration successful' });
 };
 
@@ -292,3 +292,59 @@ exports.likeDislikeMovie = async (req, res) => {
   }
 };
 
+// ======================== Content Editor Register/Login ========================
+
+// Register for Content Editor
+exports.registerEditor = async (req, res) => {
+  const { email, password } = req.body;
+  const db = await connectDB();
+  const users = db.collection('users');
+
+  // Check if email already exists
+  const existing = await users.findOne({ email });
+  if (existing) {
+    return res.json({ success: false, message: 'Email already registered' });
+  }
+
+  // Check password strength
+  if (!strongPasswordRegex.test(password)) {
+    return res.json({
+      success: false,
+      message: "Password must include uppercase, lowercase, number, special character, and be at least 8 characters long."
+    });
+  }
+
+  // Hash password and save
+  const salt = generateSalt();
+  const hashed = hash(password, salt);
+
+  await users.insertOne({ 
+    email, 
+    password: hashed, 
+    salt, 
+    role: "editor"  // 👈 Force role as editor
+  });
+
+  res.json({ success: true, message: 'Editor registration successful' });
+};
+
+// Login for Content Editor
+exports.loginEditor = async (req, res) => {
+  const { email, password } = req.body;
+  const db = await connectDB();
+  const users = db.collection('users');
+
+  // Find editor account only
+  const user = await users.findOne({ email, role: "editor" });
+  if (!user) {
+    return res.json({ success: false, message: 'Editor account not found' });
+  }
+
+  // Verify password
+  const hashed = hash(password, user.salt);
+  if (hashed === user.password) {
+    res.json({ success: true, message: 'Editor login successful' });
+  } else {
+    res.json({ success: false, message: 'Wrong password' });
+  }
+};

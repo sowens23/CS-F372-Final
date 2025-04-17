@@ -35,6 +35,13 @@ app.post('/api/account/like-dislike', auth.likeDislikeMovie);
 app.post('/api/account/like/get', auth.getLikedMovies);
 app.post('/api/account/dislike/get', auth.getDislikedMovies);
 
+// For Content Editor
+app.post('/api/editor/login', auth.loginEditor);
+app.post('/api/editor/register', auth.registerEditor);
+
+
+
+
 
 
 
