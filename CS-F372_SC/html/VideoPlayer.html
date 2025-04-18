@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Styling/PublicHeader.css">
+    <link rel="stylesheet" href="../Styling/PlayerStyle.css" />
+</head>
+
+  <!-- Header --> 
+  <header class="header">
+    <div class="header-left">
+      <div class="header-logo">
+        <img src="../Assets/UmovieLogo.png" alt="MovieLogo" />
+      </div>
+    </div>
+  
+      <!-- Navigation -->
+  <div class="header-right">
+    <nav class="nav">
+      <a href="../html/index_Home.html">Home</a>
+      <a href="../html/index_Account.html">Account</a>
+      <a href="../html/index_ContentEditor.html">Content Editor</a>
+      <a href="../html/index_MarketingManager.html">Marketing Manager</a>
+      <a href="../html/index_Login.html">Login</a>
+    </nav>
+    <p id="banner-email">Loading...</p> <!-- Placeholder for email -->
+  </div>
+  </header>
+
+  <body>
+    <div class="player-container">
+        <h1 id="movie-title">🎬 Now Playing</h1>
+        <video id="movie-player" controls autoplay muted>
+            <source id="video-source" src="" type="video/mp4" />
+        </video>
+    </div>
+  </body>
+
+  <script src="../Javascript/script_VideoPlayer.js"></script>
+</html>
