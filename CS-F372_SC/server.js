@@ -4,51 +4,61 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
-const auth = require('./authController'); // 自己写的认证控制器
+const auth = require('./Javascript/authController'); // Custom authentication controller
+const importMovies = require("./Javascript/script_ImportMovies"); // Import the importMovies function
 
 const app = express();
 const port = 3000;
 
-// ================= 中间件 =================
+// ================= Middleware =================
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(session({
   secret: 'Super_Secret_Key',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day
 }));
 
-// ================= 静态资源 =================
-app.use(express.static(path.join(__dirname))); // 例如 login 页面、注册页面、主页等 html
+// ================= Static Resources =================
+app.use(express.static(path.join(__dirname))); // For example, login page, registration page, homepage, etc. (HTML files)
 
-// ================= 接口注册 =================
+// ================= API Registration =================
 app.post('/api/account/login', auth.login);
 app.post('/api/account/register', auth.register);
-app.post('/api/account/update', auth.update);
+// app.post('/api/account/update', auth.update);
+app.get("/api/account/session", auth.getSession);
 
+// For User Account Management
 app.post('/api/account/favorite/add', auth.addFavorites);
+app.post('/api/account/favorite/remove', auth.removeFavorites);
 app.post('/api/account/favorite/get', auth.getFavorites);
-
 app.post('/api/account/like-dislike', auth.likeDislikeMovie);
-
 app.post('/api/account/like/get', auth.getLikedMovies);
 app.post('/api/account/dislike/get', auth.getDislikedMovies);
+app.post("/api/movies/search", auth.searchMovies);
 
 // For Content Editor
-app.post('/api/editor/login', auth.loginEditor);
-app.post('/api/editor/register', auth.registerEditor);
-
 app.post('/api/editor/add-movie', auth.addMovie);
+app.post("/api/editor/update-movie", auth.updateMovie);
 
+// For Marketing Manager
+app.post('/api/marketing/play-count', auth.updatePlayCount);
+app.post("/api/account/watchHistory", auth.updateWatchHistory);
+app.post("/api/account/watchHistory/get", auth.getWatchHistory);
+app.post("/api/movies/feedback/add", auth.addFeedback);
+app.get("/api/movies", auth.getMovies);
 
-
-
-
+// ================= Import Movies on Server Start =================
+importMovies().then(() => {
+  console.log("✅ Movie import update process completed.");
+});
 
 // ================= Default Webpage to jump to =================
 app.get('/', (req, res) => {
-  res.redirect('/Viewer/ViewerLogin/index_ViewerLogin.html');
+  res.redirect('/html/index_Login.html');
 });
 
 // ================= 启动服务 =================

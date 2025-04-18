@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../Styling/PublicHeader.css">
+  <link rel="stylesheet" href="../Styling/ViewerLoginStyle.css" />
+</head>
+
+<!-- Header --> 
+<header class="header">
+  <div class="header-left">
+    <div class="header-logo">
+      <img src="../Assets/UmovieLogo.png" alt="MovieLogo" />
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="header-right">
+    <nav class="nav">
+      <a href="../html/index_Home.html">Home</a>
+      <a href="../html/index_Account.html">Account</a>
+      <a href="../html/index_ContentEditor.html">Content Editor</a>
+      <a href="../html/index_MarketingManager.html">Marketing Manager</a>
+      <a href="../html/index_Login.html">Login</a>
+    </nav>
+    <p id="banner-email">Loading...</p> <!-- Placeholder for email -->
+  </div>
+</header>
+
+<body>
+  <div class="form-box" id="login">
+    <h2>Account Login</h2>
+    <form>
+      <input id="login-email" type="email" placeholder="Email" required />
+      <input id="login-password" type="password" placeholder="Password" required />
+      <div class="checkbox-area">
+        <!-- <label><input type="checkbox" /> Remember me</label> -->
+        <!-- <a href="#" class="forgot">Forgot Password?</a> -->
+      </div>
+      <button id="login-button" type="submit" class="btn">Login</button>
+    </form>
+  </div>
+
+  <div class="form-box hidden" id="register">
+    <h2>Register Account</h2>
+    <form>
+      <input id="register-username" type="text" placeholder="User Name" required />
+      <input id="register-email" type="email" placeholder="Email" required />
+      <input id="register-password" type="password" placeholder="Password" required />
+      <div class="checkbox-area">
+        <label><input type="checkbox" id="content-editor" /> Content Editor</label>
+        <label><input type="checkbox" id="marketing-manager" /> Marketing Manager</label>
+      </div>
+      <div class="checkbox-area">
+        <label><input type="checkbox" required /> I agree to the <a href="../html/terms.html">terms & conditions</a></label>
+      </div>
+      <button id="register-button" type="submit" class="btn">Register</button>
+    </form>
+  </div>
+
+ </body>
+
+ <script src="../Javascript/script_Login.js"></script>
+</html>
+ 
