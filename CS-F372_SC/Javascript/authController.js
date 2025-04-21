@@ -17,30 +17,68 @@ function generateSalt() {
 // Register.js
 exports.register = async (req, res) => {
   console.log("Received request", req.body);
-  const { username, email, password, roles } = req.body;
+  const { username, email, password, roles = [] } = req.body; // Default roles to an empty array
   const db = await connectDB();
   const users = db.collection('users');
 
-  const existing = await users.findOne({ email });
-  if (existing) {
-    return res.json({ success: false, message: 'User already registered' });
+  try {
+    // Validate input
+    if (!username || !email || !password) {
+      return res.status(400).json({ success: false, message: "Missing required fields" });
+    }
+
+    const user = await users.findOne({ email });
+    if (user) {
+      return res.json({ success: false, message: 'User already registered' });
+    }
+
+    // Email validation regex
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      return res.json({ success: false, message: '⚠️ Please enter a valid email address.' });
+    }
+
+    if (!strongPasswordRegex.test(password)) {
+      return res.json({
+        success: false,
+        message: "Password must include uppercase, lowercase, number, special character, and be at least 8 characters long."
+      });
+    }
+
+    const salt = generateSalt();
+    const hashed = hash(password, salt);
+
+    // Insert the new user into the database
+    try {
+      await users.insertOne({ username, email, password: hashed, salt, roles });
+    } catch (dbError) {
+      console.error("❌ Database error during registration:", dbError);
+      return res.status(500).json({ success: false, message: "Database error" });
+    }
+
+    // Automatically log the user in by creating a session
+    req.session.user = { 
+      email: email, 
+      username: username, 
+      roles: roles
+    };
+
+    // Determine redirection based on roles
+    let redirectPage = "/html/index_Home.html"; // Default page
+    if (roles.includes("Marketing Manager")) {
+      redirectPage = "/html/index_MarketingManager.html";
+    } else if (roles.includes("Content Editor")) {
+      redirectPage = "/html/index_ContentEditor.html";
+    }
+
+    res.json({ success: true, message: "Registration successful", redirect: redirectPage });
+  } catch (error) {
+    console.error("❌ Error during registration:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
-
-  if (!strongPasswordRegex.test(password)) {
-    return res.json({
-      success: false,
-      message: "Password must include uppercase, lowercase, number, special character, and be at least 8 characters long."
-    });
-  }
-
-  const salt = generateSalt();
-  const hashed = hash(password, salt);
-
-  await users.insertOne({ username, email, password: hashed, salt, roles});
-  res.json({ success: true, message: 'Registration successful' });
 };
 
-// Login.js 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   const db = await connectDB();
@@ -72,7 +110,16 @@ exports.login = async (req, res) => {
       username: user.username, 
       roles: user.roles || ["viewer"] // Default to "viewer" if roles are not defined
     };
-    res.json({ success: true, message: 'Login successful' });
+
+    // Determine redirection based on roles
+    let redirectPage = "/html/index_Home.html"; // Default page
+    if (user.roles.includes("Marketing Manager")) {
+      redirectPage = "/html/index_MarketingManager.html";
+    } else if (user.roles.includes("Content Editor")) {
+      redirectPage = "/html/index_ContentEditor.html";
+    }
+
+    res.json({ success: true, message: 'Login successful', redirect: redirectPage });
     console.log("Session data:", req.session);
   } else {
     res.json({ success: false, message: 'Wrong password' });
@@ -86,8 +133,8 @@ exports.getSession = async (req, res) => {
       res.json({
         success: true,
         email: req.session.user.email,
-        username: req.session.user.username || "viewer", // Provide username or fallback to "Viewer",
-        roles: req.session.user.roles || ["viewer"], // Provide roles or fallback to "viewer"
+        username: req.session.user.username,
+        roles: req.session.user.roles
       });
     } else {
       res.json({ success: false, message: "No active session" });
@@ -243,19 +290,21 @@ exports.getFavorites = async (req, res) => {
 // ======================== GET LIKED API ========================
 
 exports.getLikedMovies = async (req, res) => {
-  const { email } = req.body; 
-
-  if (!email) return res.json({ success: false, message: "Missing email" });
-
+  const { email } = req.body;
   const db = await connectDB();
   const users = db.collection("users");
 
-  const user = await users.findOne({ email });
-  if (!user) {
-    return res.json({ success: false, message: "User not found" });
-  }
+  try {
+    const user = await users.findOne({ email });
+    if (!user || !user.likedMovies) {
+      return res.json({ success: true, likedMovies: [] }); // Return an empty array if no likes
+    }
 
-  res.json({ success: true, likedMovies: user.likedMovies || [] });
+    res.json({ success: true, likedMovies: user.likedMovies });
+  } catch (error) {
+    console.error("❌ Error fetching liked movies:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
 // ======================== ADD DISLIKED API ========================
@@ -350,28 +399,40 @@ exports.likeDislikeMovie = async (req, res) => {
   }
 };
 
-// ======================== Add new movie card ========================
+// ======================== Add Movie ========================
 exports.addMovie = async (req, res) => {
-  const { title, genre, videoPath } = req.body;
-
-  if (!title || !genre || !videoPath) {
-    return res.json({ success: false, message: 'Missing required fields' });
-  }
-
+  const { title, genre, poster, filepath } = req.body; // Get movie details from the request body
   const db = await connectDB();
-  const movies = db.collection('movies');
+  const movies = db.collection("movies");
 
   try {
-    await movies.insertOne({
+    // Check if the movie already exists
+    const existingMovie = await movies.findOne({ title });
+    if (existingMovie) {
+      return res.status(400).json({ success: false, message: "Movie with this title already exists." });
+    }
+
+    // Add the movie to the database
+    const timestamp = new Date(); // Current timestamp
+    const newMovie = {
       title,
       genre,
-      videoPath,
-      createdAt: new Date() 
-    });
-    res.json({ success: true, message: 'Movie added successfully' });
-  } catch (err) {
-    console.error('❌ Error adding movie:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+      poster,
+      filepath,
+      createdAt: timestamp,
+    };
+    await movies.insertOne(newMovie);
+
+    // Update the MovieList.json file
+    // const movieListPath = path.join(__dirname, "../Assets", "MovieList.json");
+    // const movieList = JSON.parse(fs.readFileSync(movieListPath, "utf-8"));
+    // movieList[title] = { ...newMovie }; // Add the new movie with timestamps
+    // fs.writeFileSync(movieListPath, JSON.stringify(movieList, null, 2));
+
+    res.json({ success: true, message: "Movie added successfully." });
+  } catch (error) {
+    console.error("❌ Error adding movie:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -513,23 +574,19 @@ exports.addFeedback = async (req, res) => {
 
 // ======================== Search Movies ========================
 exports.searchMovies = async (req, res) => {
-  const { query } = req.body;
-  
-  if (!query) {
-    return res.status(400).json({ success: false, message: "Missing search query" });
-  }
-  
+  const { query } = req.body; // Get the search query from the request body
   const db = await connectDB();
   const movies = db.collection("movies");
-  
+
   try {
-    const results = await movies
-    .find({ title: { $regex: query, $options: "i" } }) // Case-insensitive search
-    .toArray();
-    
-    res.json({ success: true, movies: results });
-  } catch (err) {
-    console.error("❌ Error searching movies:", err);
+    // Search for movies with titles matching the query (case-insensitive)
+    const searchResults = await movies.find({
+      title: { $regex: query, $options: "i" } // "i" makes it case-insensitive
+    }).toArray();
+
+    res.json({ success: true, movies: searchResults });
+  } catch (error) {
+    console.error("❌ Error searching movies:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -537,75 +594,196 @@ exports.searchMovies = async (req, res) => {
 // ======================== Update Movies ========================
 exports.updateMovie = async (req, res) => {
   const { originalTitle, updatedTitle, updatedGenre, updatedPoster, updatedFilepath } = req.body;
-
-  if (!originalTitle) {
-    return res.status(400).json({ success: false, message: "Original title is required" });
-  }
-
   const db = await connectDB();
   const movies = db.collection("movies");
 
   try {
-    // Fetch the current movie data
-    const currentMovie = await movies.findOne({ title: originalTitle });
-    if (!currentMovie) {
+    // Find the movie by its original title
+    const movie = await movies.findOne({ title: originalTitle });
+    if (!movie) {
       return res.status(404).json({ success: false, message: "Movie not found" });
     }
 
-    // Prepare the update object
-    const updateFields = {};
-    if (updatedTitle && updatedTitle !== currentMovie.title) updateFields.title = updatedTitle;
-    if (updatedGenre && updatedGenre !== currentMovie.genre) updateFields.genre = updatedGenre;
-    if (updatedPoster && updatedPoster !== currentMovie.poster) updateFields.poster = updatedPoster;
-    if (updatedFilepath && updatedFilepath !== currentMovie.filepath) updateFields.filepath = updatedFilepath;
+    // Update the movie with the new details
+    await movies.updateOne(
+      { title: originalTitle },
+      {
+        $set: {
+          title: updatedTitle,
+          genre: updatedGenre,
+          poster: updatedPoster,
+          filepath: updatedFilepath,
+        },
+      }
+    );
 
-    // Only update if there are changes
-    if (Object.keys(updateFields).length === 0) {
-      return res.json({ success: true, message: "No changes detected" });
-    }
-
-    // Update the movie in the database
-    await movies.updateOne({ title: originalTitle }, { $set: updateFields });
-
-    // Update the MovieList.json file
-    const movieListPath = path.join(__dirname, "../Assets", "MovieList.json");
-    const movieList = JSON.parse(fs.readFileSync(movieListPath, "utf-8"));
-    const movieKey = Object.keys(movieList).find((key) => movieList[key].title === originalTitle);
-
-    if (movieKey) {
-      delete movieList[movieKey];
-      movieList[updatedTitle || originalTitle] = {
-        ...currentMovie,
-        ...updateFields,
-      };
-
-      fs.writeFileSync(movieListPath, JSON.stringify(movieList, null, 2));
-    }
-
-    res.json({ success: true, message: "Movie updated successfully" });
+    console.log("Original title received:", originalTitle);
+    res.json({ success: true, message: `Movie "${updatedTitle}" updated successfully.` });
   } catch (error) {
     console.error("❌ Error updating movie:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, message: "Failed to update movie" });
   }
 };
 
 // API to fetch all movies with play counts and feedback
-exports.getMovies = async (req, res) => {
+exports.getAllMovies = async (req, res) => {
   const db = await connectDB();
   const movies = db.collection("movies");
 
   try {
-    const movieList = await movies.find({}).toArray();
+    // Fetch all movies from the database
+    const allMovies = await movies.find({}).toArray();
 
-    const moviesWithDetails = movieList.map((movie) => ({
-      title: movie.title,
-      plays: movie.plays || 0,
-      feedback: movie.feedback || [],
-    }));
-
-    res.json({ success: true, data: moviesWithDetails });
+    res.json({ success: true, movies: allMovies });
   } catch (error) {
     console.error("❌ Error fetching movies:", error);
     res.status(500).json({ success: false, message: "Failed to fetch movies" });
+  }
+};
+
+// API to Logout
+exports.logout = async (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("❌ Error destroying session:", err);
+        return res.status(500).json({ success: false, message: "Failed to log out" });
+      }
+      res.clearCookie("connect.sid"); // Clear the session cookie
+      res.json({ success: true, message: "Logged out successfully" });
+    });
+  } catch (error) {
+    console.error("❌ Error during logout:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// Delete Movie
+exports.deleteMovie = async (req, res) => {
+  const { title } = req.body; // Get the movie title from the request body
+  const db = await connectDB();
+  const movies = db.collection("movies");
+
+  try {
+    // Delete the movie from the database
+    const result = await movies.deleteOne({ title });
+    // if (result.deletedCount === 1) {
+    //   // Update the MovieList.json file
+    //   const movieListPath = path.join(__dirname, "../Assets", "MovieList.json");
+    //   const movieList = JSON.parse(fs.readFileSync(movieListPath, "utf-8"));
+
+    //   // Find the exact key in MovieList.json that matches the title
+    //   const movieKey = Object.keys(movieList).find(
+    //     (key) => key.toLowerCase() === title.toLowerCase()
+    //   );
+
+    //   if (movieKey) {
+    //     delete movieList[movieKey]; // Remove the movie entry from the JSON object
+    //     fs.writeFileSync(movieListPath, JSON.stringify(movieList, null, 2)); // Save the updated JSON file
+    //     res.json({ success: true, message: `Movie "${title}" deleted successfully.` });
+    //   } else {
+    //     res.json({
+    //       success: false,
+    //       message: `Movie "${title}" not found in MovieList.json.`,
+    //     });
+    //   }
+    // } else {
+    //   res.json({ success: false, message: `Movie "${title}" not found in the database.` });
+    // }
+  } catch (error) {
+    console.error("❌ Error deleting movie:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.getUserReactions = async (req, res) => {
+  const { email } = req.body;
+  const db = await connectDB();
+  const users = db.collection("users");
+
+  try {
+    // Fetch the user's liked, disliked, and favorited movies
+    const user = await users.findOne(
+      { email },
+      { projection: { likedMovies: 1, dislikedMovies: 1, favorites: 1 } }
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Construct the reactions object
+    const reactions = {};
+
+    // Initialize all reactions as false
+    const allMovies = new Set([
+      ...(user.likedMovies || []),
+      ...(user.dislikedMovies || []),
+      ...(user.favorites || []),
+    ]);
+
+    allMovies.forEach((movie) => {
+      reactions[movie] = { likedMovies: false, dislikedMovies: false, favorites: false };
+    });
+
+    // Update reactions based on database hits
+    (user.likedMovies || []).forEach((movie) => {
+      reactions[movie].likedMovies = true;
+    });
+
+    (user.dislikedMovies || []).forEach((movie) => {
+      reactions[movie].dislikedMovies = true;
+    });
+
+    (user.favorites || []).forEach((movie) => {
+      reactions[movie].favorites = true;
+    });
+
+    res.json({ success: true, reactions });
+  } catch (error) {
+    console.error("❌ Error fetching user reactions:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// Returns all user emails from the database
+exports.getAllUsers = async (req, res) => {
+  const db = await connectDB();
+  const users = db.collection("users");
+
+  try {
+    // Fetch all users and project only their email field
+    const userEmails = await users.find({}, { projection: { email: 1, _id: 0 } }).toArray();
+
+    // Extract emails into a simple array
+    const emails = userEmails.map((user) => user.email);
+
+    res.json({ success: true, emails });
+  } catch (error) {
+    console.error("❌ Error fetching user emails:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch user emails" });
+  }
+};
+
+// Update Marketing Manager Notes
+exports.updateMovieNote = async (req, res) => {
+  const { title, note } = req.body;
+  const db = await connectDB();
+  const movies = db.collection("movies");
+
+  try {
+    const result = await movies.updateOne(
+      { title },
+      { $set: { note } }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ success: false, message: "Movie not found" });
+    }
+
+    res.json({ success: true, message: `Note for movie "${title}" updated successfully.` });
+  } catch (error) {
+    console.error("❌ Error updating movie note:", error);
+    res.status(500).json({ success: false, message: "Failed to update movie note" });
   }
 };

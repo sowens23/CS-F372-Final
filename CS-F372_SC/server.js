@@ -39,22 +39,27 @@ app.post('/api/account/like-dislike', auth.likeDislikeMovie);
 app.post('/api/account/like/get', auth.getLikedMovies);
 app.post('/api/account/dislike/get', auth.getDislikedMovies);
 app.post("/api/movies/search", auth.searchMovies);
+app.post("/api/account/logout", auth.logout);
+app.post("/api/account/watchHistory", auth.updateWatchHistory);
+app.post("/api/account/watchHistory/get", auth.getWatchHistory);
+app.post("/api/account/reactions", auth.getUserReactions);
 
 // For Content Editor
 app.post('/api/editor/add-movie', auth.addMovie);
 app.post("/api/editor/update-movie", auth.updateMovie);
+app.post("/api/editor/delete-movie", auth.deleteMovie);
 
 // For Marketing Manager
 app.post('/api/marketing/play-count', auth.updatePlayCount);
-app.post("/api/account/watchHistory", auth.updateWatchHistory);
-app.post("/api/account/watchHistory/get", auth.getWatchHistory);
 app.post("/api/movies/feedback/add", auth.addFeedback);
-app.get("/api/movies", auth.getMovies);
+app.get("/api/movies/getAllMovies", auth.getAllMovies);
+app.get("/api/users/getAllUsers", auth.getAllUsers);
+app.post("/api/movies/update-note", auth.updateMovieNote);
 
 // ================= Import Movies on Server Start =================
-importMovies().then(() => {
-  console.log("✅ Movie import update process completed.");
-});
+// importMovies().then(() => {
+//   console.log("✅ Movie import update process completed.");
+// });
 
 // ================= Default Webpage to jump to =================
 app.get('/', (req, res) => {

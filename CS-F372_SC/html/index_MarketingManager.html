@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marketing Manager</title>
   <link rel="stylesheet" href="../Styling/PublicHeader.css">
+  <link rel="stylesheet" href="../Styling/MarketingManager.css">
 </head>
 <body>
   <!-- Header -->
@@ -25,25 +26,41 @@
         <a href="../html/index_Login.html">Login</a>
       </nav>
       <p id="banner-email">Loading...</p> <!-- Placeholder for email -->
+      <button id="sign-out-button">Sign Out</button>
     </div>
   </header>
 
   <main>
-    <h2>Movie Statistics</h2>
+    <h2>Marketing Manager Dashboard</h2>
     <table id="movie-table" border="1">
       <thead>
         <tr>
           <th>Title</th>
           <th>Plays</th>
-          <th>Feedback Comments</th>
+          <th>Likes</th>
+          <th>Disikes</th>
+          <th>Favs</th>
+          <th>Feedback</th>
+          <th>Notes</th>
         </tr>
       </thead>
       <tbody>
         <!-- Movie data will be dynamically inserted here -->
       </tbody>
     </table>
+    <div id="notesModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h2>Edit Note</h2>
+        <textarea id="notesTextArea" rows="5" cols="40"></textarea>
+        <div class="modal-buttons">
+          <button id="saveNotesButton">Save</button>
+          <button id="closeNotesModal">Close</button>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <script src="../Javascript/scripts_MarketingManager.js"></script>
+  <script src="../Javascript/script_MarketingManager.js"></script>
+  <script src="../Javascript/script_General.js"></script>
 </body>
 </html>

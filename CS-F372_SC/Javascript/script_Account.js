@@ -31,10 +31,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // === Fetch All Movies ===
-    console.log("Current User Email:", currentUserEmail); // Debugging log
-    const movieResponse = await fetch("../Assets/MovieList.json");
-    allMovies = await movieResponse.json();
-    console.log("🎥 All movies loaded:", allMovies);
+    console.log("Fetching all movies...");
+    try {
+      const movieResponse = await fetch("http://localhost:3000/api/movies/getAllMovies");
+      const movieData = await movieResponse.json();
+
+      if (!movieResponse.ok || !movieData.success) {
+        throw new Error(`Failed to fetch movies: ${movieData.message || movieResponse.status}`);
+      }
+
+      allMovies = movieData.movies; // Store the movies in the global variable
+      console.log("🎥 All movies loaded:", allMovies);
+    } catch (error) {
+      console.error("❌ Error fetching movies:", error);
+    }
 
     // === Render Favorites ===
     if (currentUserEmail) {
@@ -157,7 +167,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   await renderReactions();
 
   // === 显示用户名 ===
-  const username = localStorage.getItem("username") || "Viewer";
+  const username = currentUserEmail;
   document.getElementById("username").textContent = username;
 
   // === 左侧菜单切换功能 ===
@@ -227,9 +237,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("liked-movie-list");
     container.innerHTML = ""; // Clear the container before rendering
   
-    const email = localStorage.getItem("currentUserEmail");
+    const email = currentUserEmail;
     if (!email) {
-      console.error("❌ Email not found in localStorage.");
+      console.error("❌ User not signed in.");
       container.innerHTML = "<p>Error: Email not found.</p>";
       return;
     }
@@ -249,23 +259,24 @@ window.addEventListener("DOMContentLoaded", async () => {
         return;
       }
   
-      const movies = data.likedMovies;
-      if (movies.length === 0) {
+      const likedMovies = data.likedMovies;
+      if (likedMovies.length === 0) {
         container.innerHTML = "<p>You haven't liked any movies yet.</p>";
         return;
       }
   
-      for (const movieId of movies) {
-        const movie = allMovies[movieId];
+      // Iterate through likedMovies and find matching movies in allMovies by title
+      for (const likedTitle of likedMovies) {
+        const movie = Object.values(allMovies).find((m) => m.title === likedTitle);
         if (!movie) {
-          console.warn(`⚠ Movie with ID "${movieId}" not found in allMovies.`);
+          console.warn(`⚠ Movie with title "${likedTitle}" not found in allMovies.`);
           continue;
         }
   
         const card = document.createElement("div");
         card.className = "movie-card";
         card.innerHTML = `
-          <img src="${movie.poster}"/>
+          <img src="${movie.poster}" alt="${movie.title}" />
           <h3>${movie.title}</h3>
           <p>Genre: ${movie.genre || "Unknown"}</p>
           <div class="controls">
@@ -273,6 +284,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           </div>
         `;
   
+        // Attach event listener to the play button
         card.querySelector(".play-button").addEventListener("click", () => {
           window.location.href = `../../html/VideoPlayer.html?title=${encodeURIComponent(movie.title)}`;
         });
@@ -293,7 +305,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("disliked-movie-list");
     container.innerHTML = ""; // Clear the container before rendering
   
-    const email = localStorage.getItem("currentUserEmail");
+    const email = currentUserEmail;
     if (!email) {
       container.innerHTML = "<p>Please log in to view disliked movies.</p>";
       return;
@@ -309,22 +321,29 @@ window.addEventListener("DOMContentLoaded", async () => {
       const data = await res.json();
       console.log("✅ Disliked movies response:", data);
   
-      if (!data.dislikedMovies || data.dislikedMovies.length === 0) {
+      if (!data || !data.success) {
+        container.innerHTML = "<p>Failed to load disliked movies.</p>";
+        return;
+      }
+  
+      const dislikedMovies = data.dislikedMovies;
+      if (dislikedMovies.length === 0) {
         container.innerHTML = "<p>You haven't disliked any movies yet.</p>";
         return;
       }
   
-      for (const movieId of data.dislikedMovies) {
-        const movie = allMovies[movieId];
+      // Iterate through dislikedMovies and find matching movies in allMovies by title
+      for (const dislikedTitle of dislikedMovies) {
+        const movie = Object.values(allMovies).find((m) => m.title === dislikedTitle);
         if (!movie) {
-          console.warn(`⚠ Movie with ID "${movieId}" not found in allMovies.`);
+          console.warn(`⚠ Movie with title "${dislikedTitle}" not found in allMovies.`);
           continue;
         }
   
         const card = document.createElement("div");
         card.className = "movie-card";
         card.innerHTML = `
-          <img src="${movie.poster}"/>
+          <img src="${movie.poster}" alt="${movie.title}" />
           <h3>${movie.title}</h3>
           <p>Genre: ${movie.genre || "Unknown"}</p>
           <div class="controls">
@@ -332,6 +351,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           </div>
         `;
   
+        // Attach event listener to the play button
         card.querySelector(".play-button").addEventListener("click", () => {
           window.location.href = `../../html/VideoPlayer.html?title=${encodeURIComponent(movie.title)}`;
         });
@@ -346,12 +366,14 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+
+  // === Watch History ===
   async function renderHistory() {
     const historyList = document.getElementById("history-list");
     const feedbackDropdown = document.getElementById("movie-select"); // Dropdown for feedback
     if (!historyList || !feedbackDropdown) return;
   
-    const email = localStorage.getItem("currentUserEmail");
+    const email = currentUserEmail;
     if (!email) {
       console.error("❌ Email not found in localStorage.");
       historyList.innerHTML = "<p>Please log in to view your watch history.</p>";

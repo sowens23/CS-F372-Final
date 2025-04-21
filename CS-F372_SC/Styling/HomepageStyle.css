@@ -47,6 +47,8 @@ body {
   color: #df0606;
 }
 
+
+
 .search-bar {
   margin-left: auto;
   max-width: 160px;
@@ -177,39 +179,74 @@ body {
   color: #ffffff;
 }
 
+/* Styling for the controls container */
 .movie-card .controls {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0.5rem;
+  flex-wrap: wrap; /* Allow buttons to wrap if needed */
+  gap: 0.5rem; /* Add space between buttons */
+  justify-content: space-between; /* Distribute buttons evenly */
+  align-items: center; /* Align buttons vertically */
 }
 
+/* Styling for all buttons in the controls */
+.movie-card .controls button {
+  flex: 1 1 calc(20% - 0.5rem); /* Make all buttons the same size, including the play button */
+  height: 40px; /* Set a consistent height */
+  font-size: 0.875rem; /* Set a consistent font size */
+  border-radius: 0.25rem; /* Add rounded corners */
+  border: none; /* Remove default borders */
+  cursor: pointer; /* Add pointer cursor */
+  text-align: center; /* Center text inside the button */
+  max-width: 100px; /* Optional: Limit the maximum width of buttons */
+}
+
+/* Specific styles for the play button */
 .movie-card .play-button {
   background-color: #2563eb;
   color: white;
-  font-size: 0.875rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
 }
 
-.movie-card .like-buttons {
-  display: flex;
-  gap: 0.25rem;
+/* Specific styles for the like button */
+.movie-card .like-btn {
+  background-color: #0d0b27;
+  color: white;
 }
 
-.movie-card .like-buttons button {
-  font-size: 1rem;
-  border: none;
-  background: none;
-  cursor: pointer;
+/* Specific styles for the dislike button */
+.movie-card .dislike-btn {
+  background-color: #290b0b;
+  color: white;
 }
 
-.movie-card .like-buttons button:first-child {
-  color: #10b981; /* green-500 */
+/* Specific styles for the favorite button */
+.movie-card .favorite-btn {
+  background-color: #291f07;
+  color: white;
 }
 
-.movie-card .like-buttons button:last-child {
-  color: #ef4444; /* red-500 */
+/* Specific styles for the clear reaction button */
+.movie-card .clear-reaction-btn {
+  background-color: #6b7280;
+  color: white;
+}
+
+/* Add hover effects for all buttons */
+.movie-card .controls button:hover {
+  opacity: 0.7; /* Slightly dim the button on hover */
+}
+
+/* Highlighted state for liked, disliked, and favorited buttons */
+.movie-card .like-btn.selected {
+  background-color: #2e20ee !important;
+  color: white !important;
+}
+
+.movie-card .dislike-btn.selected {
+  background-color: #d42323 !important;
+  color: white !important;
+}
+
+.movie-card .favorite-btn.selected {
+  background-color: #daa31a !important;
+  color: white !important;
 }
