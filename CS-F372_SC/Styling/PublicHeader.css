@@ -48,6 +48,21 @@ body {
     color: #df0606;
   }
   
+  #sign-out-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    margin-left: auto;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #sign-out-button:hover {
+    background-color: #ff1a1a;
+  }
+
   /* Search Bar */
   .search-bar {
     margin-left: auto;

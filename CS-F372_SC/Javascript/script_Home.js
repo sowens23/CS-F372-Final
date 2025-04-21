@@ -24,11 +24,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and render movies
   try {
-    const response = await fetch("../Assets/MovieList.json");
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // const response = await fetch("../Assets/MovieList.json");
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! status: ${response.status}`);
+    // }
+    // const movies = await response.json();
+    console.log("Fetching all movies...");
+    const response = await fetch("http://localhost:3000/api/movies/getAllMovies"); // Call the new API endpoint
+    const movieData = await response.json();
+
+    if (!response.ok || !movieData.success) {
+      throw new Error(`Failed to fetch movies: ${movieData.message || response.status}`);
     }
-    const movies = await response.json();
+
+    const movies = movieData.movies; // Extract movies from the response
+    console.log("🎥 All movies loaded:", movies);
+
     console.log("Movies fetched successfully:", movies);
     renderMovies(movies);
   } catch (error) {
@@ -37,9 +48,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // Event listener for the search bar
-document.getElementById("search-bar").addEventListener("input", (e) => {
-  const query = e.target.value.toLowerCase(); // Get the search query and convert to lowercase
-  filterMovies(query);
+document.getElementById("search-bar").addEventListener("input", async (event) => {
+  const query = event.target.value.trim(); // Get the search query
+
+  try {
+    // Send the search query to the backend
+    const response = await fetch("http://localhost:3000/api/movies/search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    });
+
+    const data = await response.json();
+    console.log("Search results:", data);
+
+    if (data.success) {
+      // Reuse the renderMovies function to display the search results
+      renderMovies(data.movies);
+    } else {
+      console.error("❌ Failed to fetch search results:", data.message);
+    }
+  } catch (error) {
+    console.error("❌ Error during search:", error);
+  }
 });
 
 // --------------------------------------------------
@@ -53,7 +84,7 @@ function attachPlayButtonListener(movieCard) {
     if (movieTitle) {
       window.location.href = `../html/VideoPlayer.html?title=${encodeURIComponent(movieTitle)}`;
     } else {
-      alert("⚠️ No movie title found for this card.");
+      console.log("⚠️ No movie title found for this card.");
     }
   });
 }
@@ -69,27 +100,25 @@ function attachFavoriteButtonListener(movieCard) {
       alert("⚠ Please log in to add favorites");
       return;
     }
-
-    const movieTitle = movieCard.querySelector("h3").textContent.trim(); // Extract the movie title
-    console.log("Movie Title:", movieTitle); // Debugging log
-
+  
+    const movieTitle = movieCard.querySelector("h3").textContent.trim();
+  
     try {
       const response = await fetch("http://localhost:3000/api/account/favorite/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: currentUserEmail, movieTitle }), // Send email and movie title
+        body: JSON.stringify({ email: currentUserEmail, movieTitle }),
       });
-
+  
       const data = await response.json();
       if (data.success) {
-        alert(`🎉 ${movieTitle} added to favorites!`);
-        favoriteButton.classList.add("selected"); // Mark the button as selected
+        console.log(`🎉 ${movieTitle} added to favorites!`);
+        movieCard.querySelector(".favorite-btn").classList.add("selected");
       } else {
-        alert(`❌ Failed to add ${movieTitle} to favorites: ${data.message}`);
+        console.error(`❌ Failed to add ${movieTitle} to favorites: ${data.message}`);
       }
     } catch (error) {
       console.error("❌ Error adding to favorites:", error);
-      alert("⚠ Network error. Please try again later.");
     }
   });
 }
@@ -117,14 +146,13 @@ function attachRemoveFavoriteButtonListener(movieCard) {
 
       const data = await response.json();
       if (data.success) {
-        alert(`🎉 "${movieTitle}" removed from favorites!`);
+        console.log(`🎉 "${movieTitle}" removed from favorites!`);
         movieCard.querySelector(".favorite-btn").classList.remove("selected");
       } else {
-        alert(`❌ Failed to remove "${movieTitle}" from favorites: ${data.message}`);
+        console.error(`❌ Failed to remove "${movieTitle}" from favorites: ${data.message}`);
       }
     } catch (error) {
       console.error("❌ Error removing from favorites:", error);
-      alert("⚠ Network error. Please try again later.");
     }
   });
 }
@@ -142,26 +170,28 @@ function attachLikeDislikeButtonListeners(movieCard) {
       alert("⚠ Please log in to like a movie.");
       return;
     }
-
+  
     const movieTitle = movieCard.querySelector("h3").textContent;
-
+  
     try {
       const response = await fetch("http://localhost:3000/api/account/like-dislike", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: currentUserEmail, movieTitle, action: "like" }),
       });
-
+  
       const data = await response.json();
       if (data.success) {
-        updateReactionUI(movieCard, true, false); // Mark as liked
-        alert(`🎉 You liked "${movieTitle}"`);
+        console.log(`🎉 You liked "${movieTitle}"`);
+        // const moviesResponse = await fetch("../Assets/MovieList.json");
+        // const movies = await moviesResponse.json();
+        movieCard.querySelector(".like-btn").classList.add("selected");
+        movieCard.querySelector(".dislike-btn").classList.remove("selected");
       } else {
-        alert(`❌ Failed to like "${movieTitle}": ${data.message}`);
+        console.error(`❌ Failed to like "${movieTitle}": ${data.message}`);
       }
     } catch (error) {
       console.error("❌ Error liking the movie:", error);
-      alert("⚠ Network error. Please try again later.");
     }
   });
 
@@ -170,26 +200,29 @@ function attachLikeDislikeButtonListeners(movieCard) {
       alert("⚠ Please log in to dislike a movie.");
       return;
     }
-
+  
     const movieTitle = movieCard.querySelector("h3").textContent;
-
+  
     try {
       const response = await fetch("http://localhost:3000/api/account/like-dislike", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: currentUserEmail, movieTitle, action: "dislike" }),
       });
-
+  
       const data = await response.json();
       if (data.success) {
-        updateReactionUI(movieCard, false, true); // Mark as disliked
-        alert(`🎉 You disliked "${movieTitle}"`);
+        console.log(`🎉 You disliked "${movieTitle}"`);
+        // Fetch updated movies and redraw the cards
+        // const moviesResponse = await fetch("../Assets/MovieList.json");
+        // const movies = await moviesResponse.json();
+        movieCard.querySelector(".like-btn").classList.remove("selected");
+        movieCard.querySelector(".dislike-btn").classList.add("selected");
       } else {
-        alert(`❌ Failed to dislike "${movieTitle}": ${data.message}`);
+        console.error(`❌ Failed to dislike "${movieTitle}": ${data.message}`);
       }
     } catch (error) {
       console.error("❌ Error disliking the movie:", error);
-      alert("⚠ Network error. Please try again later.");
     }
   });
 }
@@ -213,34 +246,12 @@ async function handleReaction(movieTitle, action, card) {
 
     const data = await res.json();
     if (data.success) {
-      // Update the UI based on the action
-      updateReactionUI(card, action === "like", action === "dislike");
       alert(data.message);
     } else {
       alert(data.message || "Failed to update reaction");
     }
   } catch (err) {
     console.error("❌ Request failed:", err);
-    alert("❌ Request failed");
-  }
-}
-
-// ----------------------------------------------------------
-// Function to update event listeners to like/dislike buttons
-// ----------------------------------------------------------
-function updateReactionUI(card, liked, disliked) {
-  const likeBtn = card.querySelector(".like-buttons button:nth-child(1)");
-  const dislikeBtn = card.querySelector(".like-buttons button:nth-child(2)");
-
-  if (liked) {
-    likeBtn.classList.add("selected");
-    dislikeBtn.classList.remove("selected");
-  } else if (disliked) {
-    dislikeBtn.classList.add("selected");
-    likeBtn.classList.remove("selected");
-  } else {
-    likeBtn.classList.remove("selected");
-    dislikeBtn.classList.remove("selected");
   }
 }
 
@@ -339,17 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
 });
 
-function filterMovies(query) {
-  query = query.trim().toLowerCase(); // Trim and convert to lowercase
-  const movieCards = document.querySelectorAll(".movie-card");
-
-  movieCards.forEach((card) => {
-    const title = card.querySelector("h3").textContent.toLowerCase();
-    card.style.display = title.includes(query) ? "" : "none";
-  });
-}
-
-function renderMovies(movies) {
+async function renderMovies(movies) {
   console.log("Movies data passed to renderMovies:", movies);
 
   const movieGrid = document.querySelector(".movie-grid");
@@ -357,7 +358,31 @@ function renderMovies(movies) {
 
   originalOrder = []; // Reset the original order
 
+  // Fetch the user's reactions (liked, disliked, favorites) from the backend
+  let userReactions = {};
+  if (currentUserEmail) {
+    try {
+      const response = await fetch("http://localhost:3000/api/account/reactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: currentUserEmail }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        userReactions = data.reactions; // Example: { "Movie Title": { liked: true, disliked: false } }
+        console.log("✅ User reactions fetched:", userReactions);
+      } else {
+        console.warn("⚠ Failed to fetch user reactions:", data.message);
+      }
+    } catch (error) {
+      console.error("❌ Error fetching user reactions:", error);
+    }
+  }
+
+  // Generate movie cards
   Object.entries(movies).forEach(([key, movie]) => {
+    const reactions = userReactions[movie.title] || { likedMovies: false, dislikedMovies: false, favorites: false }; // Default to false for all reactions
+    // Generate the movie card with the appropriate classes
     const movieCard = document.createElement("div");
     movieCard.classList.add("movie-card");
 
@@ -365,7 +390,7 @@ function renderMovies(movies) {
     movieCard.setAttribute("data-movie", movie.title.toLowerCase());
     movieCard.setAttribute("data-genre", movie.genre ? movie.genre.toLowerCase() : "unknown");
 
-    // Populate the movie card
+    // Populate the movie card with the "selected" class applied directly
     movieCard.innerHTML = `
       <img src="${movie.poster}" alt="Movie Poster" />
       <h3>${movie.title}</h3>
@@ -373,13 +398,16 @@ function renderMovies(movies) {
       <div class="controls">
         <button class="play-button">▶ Play</button>
         <div class="like-buttons">
-          <button class="like-btn">👍</button>
-          <button class="dislike-btn">👎</button>
-          <button class="favorite-btn">➕</button>
+          <button class="like-btn ${reactions.likedMovies ? "selected" : ""}">👍</button>
+          <button class="dislike-btn ${reactions.dislikedMovies ? "selected" : ""}">👎</button>
+          <button class="favorite-btn ${reactions.favorites ? "selected" : ""}">➕</button>
           <button class="clear-reaction-btn">❌</button>
         </div>
       </div>
     `;
+
+    // Debugging: Log the generated HTML
+    // console.log(movieCard.innerHTML);
 
     movieGrid.appendChild(movieCard);
     originalOrder.push(movieCard); // Store the card in the original order array
@@ -391,5 +419,5 @@ function renderMovies(movies) {
     attachLikeDislikeButtonListeners(movieCard);
   });
 
-  console.log("Original Order:", originalOrder.map(card => card.querySelector("h3").textContent)); // Debugging log
+  // console.log("Original Order:", originalOrder.map(card => card.querySelector("h3").textContent)); // Debugging log
 }

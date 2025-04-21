@@ -36,8 +36,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch the movie data and load the player
   try {
-    const response = await fetch("../Assets/MovieList.json");
-    const movies = await response.json();
+    // const response = await fetch("../Assets/MovieList.json");
+    // const movies = await response.json();
+
+    console.log("Fetching all movies...");
+    const response = await fetch("http://localhost:3000/api/movies/getAllMovies"); // Call the new API endpoint
+    const movieData = await response.json();
+
+    if (!response.ok || !movieData.success) {
+      throw new Error(`Failed to fetch movies: ${movieData.message || response.status}`);
+    }
+
+    const movies = movieData.movies; // Extract movies from the response
+    console.log("🎥 All movies loaded:", movies);
 
     // Find the movie object by title
     const movie = Object.values(movies).find((m) => m.title === movieTitle);

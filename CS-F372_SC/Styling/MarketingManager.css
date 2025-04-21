@@ -1,0 +1,105 @@
+/* Styling for the Marketing Manager data table */
+table {
+  width: 80%;
+  margin: 20px auto; /* Center the table horizontally */
+  border-collapse: collapse;
+  box-shadow: 0 0 10px red; /* Red border shadow */
+}
+
+th, td {
+  border: 1px solid #ddd; /* Light border for cells */
+  padding: 10px;
+  text-align: center; /* Center text in cells */
+  color: white; /* White text for contrast */
+}
+
+td {
+  background-color: black; /* Black background for table data cells */
+}
+
+th {
+  background-color: #8b0000; /* Light gray background for headers */
+  font-weight: bold;
+  color: black; /* Black text for header */
+}
+
+tr:hover {
+  background-color: #8b0000; /* Soft red close to black for hover effect */
+}
+
+/* Modal background */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  background-color: rgba(0, 0, 0, 0.514); 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  padding: 350px;
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #1f1f1f; 
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  width: 300px;
+  text-align: center;
+  margin: 0;
+}
+
+/* Text area */
+#notesTextArea {
+  width: calc(100% - 20px); /* Add padding inside the modal */
+  height: 100px; /* Shorter height for short notes */
+  background-color: #333; /* Darker background */
+  color: white; /* White text */
+  border: 1px solid #555; /* Subtle border */
+  padding: 10px;
+  border-radius: 4px; /* Rounded corners */
+  resize: none; /* Disable resizing */
+  margin-bottom: 1rem; /* Add spacing below the text area */
+}
+
+/* Buttons container */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between; /* Space between Save and Close buttons */
+  gap: 10px;
+}
+
+/* Save button */
+#saveNotesButton {
+  background-color: #10b981; /* Green background */
+  color: black; /* Black text */
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px; /* Rounded corners */
+}
+
+#saveNotesButton:hover {
+  background-color: #059669; /* Darker green on hover */
+}
+
+/* Close button */
+#closeNotesModal {
+  background-color: #cf0e0ec4; /* Red background */
+  color: white; /* White text */
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px; /* Rounded corners */
+}
+
+#closeNotesModal:hover {
+  background-color: #dc2626; /* Darker red on hover */
+}

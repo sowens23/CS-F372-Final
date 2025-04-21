@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MovieHub - Home</title>
   <link rel="stylesheet" href="../Styling/ContentEditor.css" />
+  <link rel="stylesheet" href="../Styling/PublicHeader.css">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -27,7 +28,8 @@
       <a href="../html/index_Login.html">Login</a>
     </nav>
     <p id="banner-email">Loading...</p> <!-- Placeholder for email -->
-    <input type="text" placeholder="Search movies..." class="search-bar" />
+    <input type="text" id="search-bar" placeholder="Search movies..." class="search-bar" />
+    <button id="sign-out-button">Sign Out</button>
   </div>
 </header>
 
@@ -39,8 +41,9 @@
   <h3>Add New Movie</h3>
   <input type="text" id="newTitle" placeholder="Movie Title" required />
   <input type="text" id="newGenre" placeholder="Genre" required />
-  <input type="text" id="newVideoPath" placeholder="Video Path (example: Assets/Videos/yourmovie.mp4)" required />
-  <button id="addMovieBtn">Add Movie</button>
+  <input type="text" id="newPoster" placeholder="Poster Filename" required />
+  <input type="text" id="newFile" placeholder="Movie Filename" required />
+  <button type="submit" id="add-movie-button">Add Movie</button>
 </div>
 
 <!-- Movie Grid -->
@@ -64,7 +67,16 @@
   <button id="saveEdit">Save</button>
 </div>
 
+<div id="notesModal" class="notes-modal" style="display: none;">
+  <div class="modal-content">
+    <h2>Marketing Manager Notes</h2>
+    <p id="notesContent"></p>
+    <button id="closeNotesModal">Close</button>
+  </div>
+</div>
+
 </body>
 
 <script src="../Javascript/script_ContentEditor.js"></script>
+<script src="../Javascript/script_General.js"></script>
 </html> 
