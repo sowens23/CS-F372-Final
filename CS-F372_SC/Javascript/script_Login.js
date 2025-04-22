@@ -1,7 +1,7 @@
 // DEBUG AUTO LOGIN
 async function autoLogin() {
   const email = "power1@power.com";
-  // const password = "!111Aaaa";
+  const password = "!111Aaaa";
 
   try {
     const response = await fetch("http://localhost:3000/api/account/login", {
@@ -26,7 +26,7 @@ async function autoLogin() {
 
 // Fetch the session data to check if the user is logged in
 document.addEventListener("DOMContentLoaded", async () => {
-  // await autoLogin(); // Call the auto-login function
+  await autoLogin(); // Call the auto-login function
 
   const bannerEmail = document.getElementById("banner-email");
 

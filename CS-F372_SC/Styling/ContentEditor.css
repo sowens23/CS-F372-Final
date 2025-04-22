@@ -372,3 +372,18 @@ body {
 #closeNotesModal:hover {
   background-color: #dc2626; /* Darker red on hover */
 }
+
+#importMoviesButton {
+  background-color: #10b981; /* Green background */
+  color: white; /* White text */
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px; /* Rounded corners */
+  margin: 5px;
+}
+
+#importMoviesButton:hover {
+  background-color: #059669; /* Darker green on hover */
+}

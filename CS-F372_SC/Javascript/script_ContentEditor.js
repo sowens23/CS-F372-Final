@@ -370,3 +370,26 @@ document.getElementById("search-bar").addEventListener("input", async (event) =>
 document.getElementById("closeNotesModal").addEventListener("click", () => {
   document.getElementById("notesModal").style.display = "none";
 });
+
+document.getElementById("importMoviesButton").addEventListener("click", async () => {
+  if (!confirm("Are you sure you want to import MovieList.json? This will only work if the database is empty.")) {
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3000/api/movies/import", {
+      method: "POST",
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      alert("🎉 MovieList.json imported successfully!");
+      location.reload(); // Reload the page to reflect the changes
+    } else {
+      alert(`❌ Failed to import MovieList.json: ${result.message}`);
+    }
+  } catch (error) {
+    console.error("❌ Error importing MovieList.json:", error);
+    alert("❌ An error occurred while importing MovieList.json.");
+  }
+});
