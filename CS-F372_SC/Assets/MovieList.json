@@ -83,6 +83,24 @@
     "poster": "../Assets/posters/SonictheHedgehog3.webp",
     "filepath": "../Assets/videos/Coffee.mp4"
   },
+  "Freakier Friday": {
+    "title": "Freakier Friday",
+    "genre": "Comeday/Family",
+    "poster": "../Assets/posters/FreakierFriday.webp",
+    "filepath": "../Assets/videos/Coffee.mp4"
+  },
+  "Harry Potter": {
+    "title": "Harry Potter",
+    "genre": "Fantasy/Action",
+    "poster": "../Assets/posters/HarryPotter.webp",
+    "filepath": "../Assets/videos/Coffee.mp4"
+  },
+  "Paddington In Peru": {
+    "title": "Paddington In Peru",
+    "genre": "Comeday/Adventure",
+    "poster": "../Assets/posters/PaddingtonInPeru.webp",
+    "filepath": "../Assets/videos/Coffee.mp4"
+  },
   "Superman Returns": {
     "title": "Superman Returns",
     "genre": "Action/Sci-Fi",
@@ -120,90 +138,45 @@
     "filepath": "../Assets/videos/Coffee.mp4"
   },
   "A Complete Unknown": {
-    "_id": "680234402b35abea65e486ba",
     "title": "A Complete Unknown",
     "genre": "History",
     "poster": "../Assets/posters/ACompleteUnknown.webp",
-    "createdAt": "2025-04-18T11:15:12.151Z",
-    "plays": 12,
-    "feedback": [
-      {
-        "email": "power@power.com",
-        "comment": "test",
-        "submittedAt": "2025-04-18T13:50:39.116Z"
-      },
-      {
-        "email": "power@power.com",
-        "comment": "testing twice!",
-        "submittedAt": "2025-04-18T13:51:09.255Z"
-      }
-    ],
-    "filepath": "../Assets/videos/Coffee.mp4",
-    "updatedAt": "2025-04-18T16:36:14.129Z"
+    "filepath": "../Assets/videos/Coffee.mp4"
   },
   "Black Bag": {
-    "_id": "680234402b35abea65e486bf",
     "title": "Black Bag",
     "genre": "Action",
     "poster": "../Assets/posters/BlackBag.webp",
-    "createdAt": "2025-04-18T11:15:12.159Z",
-    "filepath": "../Assets/videos/Coffee.mp4",
-    "updatedAt": "2025-04-18T16:36:14.136Z",
-    "plays": 2
+    "filepath": "../Assets/videos/Coffee.mp4"
   },
   "Gladiator": {
-    "_id": "680234402b35abea65e486c4",
     "title": "Gladiator",
     "genre": "Action/Adventure",
     "poster": "../Assets/posters/Gladiator.webp",
-    "createdAt": "2025-04-18T11:15:12.164Z",
-    "filepath": "../Assets/videos/Coffee.mp4",
-    "updatedAt": "2025-04-18T16:36:14.142Z"
+    "filepath": "../Assets/videos/Coffee.mp4"
   },
   "Becoming Led Zeppelin": {
-    "_id": "680234402b35abea65e486be",
     "title": "Becoming Led Zeppelin",
     "genre": "Documentary",
     "poster": "../Assets/posters/BecomingLedZeppelin.webp",
-    "createdAt": "2025-04-18T11:15:12.157Z",
-    "plays": 8,
-    "filepath": "../Assets/videos/Coffee.mp4",
-    "updatedAt": "2025-04-18T16:36:14.135Z"
+    "filepath": "../Assets/videos/Coffee.mp4"
   },
   "Minecraft Movie": {
-    "_id": "680234402b35abea65e486bb",
     "title": "Minecraft Movie",
     "genre": "Action/Fantasy",
     "poster": "../Assets/posters/MinecraftMovie.webp",
-    "createdAt": "2025-04-18T11:15:12.153Z",
-    "plays": 6,
-    "filepath": "../Assets/videos/Coffee.mp4",
-    "updatedAt": "2025-04-18T16:36:14.131Z"
+    "filepath": "../Assets/videos/Coffee.mp4"
   },
   "The Wild Robot": {
-    "_id": "680234402b35abea65e486bc",
     "title": "The Wild Robot",
     "genre": "Family/Sci-Fi",
     "poster": "../Assets/posters/TheWildRobot.webp",
-    "createdAt": "2025-04-18T11:15:12.154Z",
-    "filepath": "../Assets/videos/Coffee.mp4",
-    "updatedAt": "2025-04-18T16:36:14.132Z"
+    "filepath": "../Assets/videos/Coffee.mp4"
   },
   "Pirates of the Caribbean": {
-    "_id": "680234402b35abea65e486c1",
     "title": "Pirates of the Caribbean",
     "genre": "Adventure/Action",
     "poster": "../Assets/posters/PiratesoftheCaribbean.webp",
-    "createdAt": "2025-04-18T11:15:12.161Z",
-    "plays": 5,
-    "filepath": "../Assets/videos/testing.mp4",
-    "updatedAt": "2025-04-18T16:36:14.139Z",
-    "feedback": [
-      {
-        "email": "power1@power.com",
-        "comment": "asdfgasdf",
-        "submittedAt": "2025-04-18T19:14:43.909Z"
-      }
-    ]
+    "filepath": "../Assets/videos/testing.mp4"
   }
 }

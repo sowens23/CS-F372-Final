@@ -48,6 +48,7 @@ app.post("/api/account/reactions", auth.getUserReactions);
 app.post('/api/editor/add-movie', auth.addMovie);
 app.post("/api/editor/update-movie", auth.updateMovie);
 app.post("/api/editor/delete-movie", auth.deleteMovie);
+app.post("/api/movies/import", auth.importMovies);
 
 // For Marketing Manager
 app.post('/api/marketing/play-count', auth.updatePlayCount);

@@ -787,3 +787,21 @@ exports.updateMovieNote = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to update movie note" });
   }
 };
+
+
+// ======================== Import Movies API ========================
+const importMovies = require("./script_ImportMovies");
+
+exports.importMovies = async (req, res) => {
+  try {
+    const result = await importMovies();
+    if (result.success) {
+      res.json({ success: true, message: result.message });
+    } else {
+      res.status(400).json({ success: false, message: result.message });
+    }
+  } catch (error) {
+    console.error("❌ Error in importMovies API:", error);
+    res.status(500).json({ success: false, message: "Internal server error." });
+  }
+};
