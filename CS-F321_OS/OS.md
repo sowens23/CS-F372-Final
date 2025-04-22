@@ -1,1 +1,0 @@
-# Here lies OS group projects
