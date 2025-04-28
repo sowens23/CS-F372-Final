@@ -258,12 +258,56 @@ async function handleReaction(movieTitle, action, card) {
 document.addEventListener("DOMContentLoaded", function () {
   const sortSelect = document.getElementById("sort");
   const genreSelect = document.getElementById("genre-filter");
+  const watchButtons = document.querySelectorAll(".watch-btn");
+
+  // Play button for Banner "Watch Now" button
+  watchButtons.forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      const movieCard = button.closest(".banner-slide"); // Get the parent slide
+      const movieTitle = movieCard.querySelector(".hero-title").textContent.trim(); // Get the movie title
+
+      if (movieTitle) {
+        try {
+          // Fetch the file path for the movie from the backend
+          const response = await fetch("http://localhost:3000/api/movies/getFilePath", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: movieTitle }),
+          });
+
+          const data = await response.json();
+
+          if (data.success && data.filePath) {
+            // Redirect to the video player page with the file path as a query parameter
+            window.location.href = `../html/VideoPlayer.html?filePath=${encodeURIComponent(data.filePath)}`;
+          } else {
+            console.error(`❌ Failed to fetch file path for "${movieTitle}": ${data.message}`);
+            alert(`Failed to play the movie: ${data.message || "Unknown error"}`);
+          }
+        } catch (error) {
+          console.error("❌ Error fetching movie file path:", error);
+          alert("An error occurred while trying to play the movie.");
+        }
+      } else {
+        console.error("⚠️ Movie title not found for this slide.");
+      }
+    });
+  });
 
   // ======================== Banner ========================
   let currentIndex = 0;
   const track = document.getElementById("banner-track");
   const slides = document.querySelectorAll(".banner-slide");
   const totalSlides = slides.length;
+  let bannerTimer;
+
+  // Function to reset the banner timer
+  function resetBannerTimer() {
+    clearInterval(bannerTimer); // Clear the existing timer
+    bannerTimer = setInterval(() => {
+      nextSlide();
+    }, 5000); // Restart the timer
+  }
 
   function updateSlidePosition(animate = true) {
     if (!animate) {
@@ -275,6 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
   }
 
+  // Update the nextSlide function
   window.nextSlide = function () {
     if (currentIndex < totalSlides - 1) {
       currentIndex++;
@@ -288,8 +333,10 @@ document.addEventListener("DOMContentLoaded", function () {
         updateSlidePosition(false); // Disable animation for the reset
       }, 500); // Match the CSS transition duration
     }
+    resetBannerTimer(); // Reset the timer
   };
 
+  // Update the prevSlide function
   window.prevSlide = function () {
     if (currentIndex > 0) {
       currentIndex--;
@@ -302,10 +349,11 @@ document.addEventListener("DOMContentLoaded", function () {
         updateSlidePosition(true); // Re-enable animation
       }, 50); // Small delay to ensure smooth transition
     }
+    resetBannerTimer(); // Reset the timer
   };
 
-  // Auto-rotate the banner every 5 seconds
-  setInterval(() => {
+  // Initialize the banner timer
+  bannerTimer = setInterval(() => {
     nextSlide();
   }, 5000);
 

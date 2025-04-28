@@ -30,6 +30,7 @@ app.post('/api/account/login', auth.login);
 app.post('/api/account/register', auth.register);
 // app.post('/api/account/update', auth.update);
 app.get("/api/account/session", auth.getSession);
+app.get("/api/movie/getFilePath", auth.getGetFilePath);
 
 // For User Account Management
 app.post('/api/account/favorite/add', auth.addFavorites);
