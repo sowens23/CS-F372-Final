@@ -31,10 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // === Fetch Movie Data ===
-    // console.log("Fetching movie data...");
-    // const movieResponse = await fetch("../Assets/MovieList.json");
-    // const movies = await movieResponse.json();
-
     console.log("Fetching all movies...");
     const response = await fetch("http://localhost:3000/api/movies/getAllMovies"); // Call the new API endpoint
     const movieData = await response.json();
@@ -105,7 +101,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const reactions = reactionsData.reactions;
-      // console.log("Reactions for user:", email, reactions);
       // Increment counters for each movie based on reactions
       for (const [movieTitle, reaction] of Object.entries(reactions)) {
         const movieKey = movieTitleToKeyMap[movieTitle]; // Get the corresponding key for the movie title
@@ -117,15 +112,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Increment counters based on boolean values
         if (reaction.likedMovies) {
           movieStats[movieKey].likes++;
-          // console.log("Adding like for ", movieTitle);
         }
         if (reaction.dislikedMovies) {
           movieStats[movieKey].dislikes++;
-          // console.log("Adding dislike for ", movieTitle);
         }
         if (reaction.favorites) {
           movieStats[movieKey].favorites++;
-          // console.log("Adding favorite for ", movieTitle);
         }
       }
     }

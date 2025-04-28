@@ -26,11 +26,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and render movies
   try {
-    // const response = await fetch("../Assets/MovieList.json");
-    // if (!response.ok) {
-    //   throw new Error(`HTTP error! status: ${response.status}`);
-    // }
-    // const movies = await response.json();
     console.log("Fetching all movies...");
     const response = await fetch("http://localhost:3000/api/movies/getAllMovies"); // Call the new API endpoint
     const movieData = await response.json();
@@ -185,8 +180,6 @@ function attachLikeDislikeButtonListeners(movieCard) {
       const data = await response.json();
       if (data.success) {
         console.log(`🎉 You liked "${movieTitle}"`);
-        // const moviesResponse = await fetch("../Assets/MovieList.json");
-        // const movies = await moviesResponse.json();
         movieCard.querySelector(".like-btn").classList.add("selected");
         movieCard.querySelector(".dislike-btn").classList.remove("selected");
       } else {
@@ -215,9 +208,6 @@ function attachLikeDislikeButtonListeners(movieCard) {
       const data = await response.json();
       if (data.success) {
         console.log(`🎉 You disliked "${movieTitle}"`);
-        // Fetch updated movies and redraw the cards
-        // const moviesResponse = await fetch("../Assets/MovieList.json");
-        // const movies = await moviesResponse.json();
         movieCard.querySelector(".like-btn").classList.remove("selected");
         movieCard.querySelector(".dislike-btn").classList.add("selected");
       } else {
@@ -456,9 +446,6 @@ async function renderMovies(movies) {
       </div>
     `;
 
-    // Debugging: Log the generated HTML
-    // console.log(movieCard.innerHTML);
-
     movieGrid.appendChild(movieCard);
     originalOrder.push(movieCard); // Store the card in the original order array
 
@@ -469,5 +456,4 @@ async function renderMovies(movies) {
     attachLikeDislikeButtonListeners(movieCard);
   });
 
-  // console.log("Original Order:", originalOrder.map(card => card.querySelector("h3").textContent)); // Debugging log
 }
