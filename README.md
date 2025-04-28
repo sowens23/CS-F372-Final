@@ -64,17 +64,25 @@ SC-F372_SC/ ─── Assets/ # Static assets (posters, videos, etc.)
             └── server.js # Main server file 
 ```
 
-## Purpose
+## Purpose and Functionality
 
-The purpose of this project is to provide a platform for managing a movie database with the following features:
+The purpose of this project is to provide a platform for managing a movie database. The following users below each have a page available to help control the flow of media and data throughout the website.
 - **Viewer**: Can watch and like/dislike movies, add them to their favorites, and leave comments/feedback to admins.
-- **Content Editor**: Add, edit, and manage movie details.
+  - **Home**: This is where the main gallery of all the movies exists, signed in users can view, like, dislike, and favorite all their movies from this page.
+  - **Account**: This is where signed in users can view their watch history, see their likes/dislikes/favorites, and leaves notes feedback for the marketing manager.
+- **Content Editor**: This is where managers with elevated priviledgees can add and remove movies, edit movie details, 
 - **Marketing Manager**: View movie statistics, user feedback, and manage notes to Content Editor.
 - **Database Management**: Import movies from a `MovieList.json` file into MongoDB where movie and user information is stored.
 
 ## Getting Started
 
-Follow these steps to set up and run the project locally:
+### Prerequisites
+To run the following software, please be sure to have a 
+  1) Working network connection.
+  2) MongoDB and Node.JS installed.
+  3) A working browser.
+
+Follow these steps below to set up and run the project locally:
 
 ### 1. Clone the Repository
 Clone and enter repository:

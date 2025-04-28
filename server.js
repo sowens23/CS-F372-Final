@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const auth = require('./Javascript/authController'); // Custom authentication controller
-const importMovies = require("./Javascript/script_ImportMovies"); // Import the importMovies function
 
 const app = express();
 const port = 3000;
@@ -28,9 +27,7 @@ app.use(express.static(path.join(__dirname))); // For example, login page, regis
 // ================= API Registration =================
 app.post('/api/account/login', auth.login);
 app.post('/api/account/register', auth.register);
-// app.post('/api/account/update', auth.update);
 app.get("/api/account/session", auth.getSession);
-app.get("/api/movie/getFilePath", auth.getGetFilePath);
 
 // For User Account Management
 app.post('/api/account/favorite/add', auth.addFavorites);
@@ -57,11 +54,6 @@ app.post("/api/movies/feedback/add", auth.addFeedback);
 app.get("/api/movies/getAllMovies", auth.getAllMovies);
 app.get("/api/users/getAllUsers", auth.getAllUsers);
 app.post("/api/movies/update-note", auth.updateMovieNote);
-
-// ================= Import Movies on Server Start =================
-// importMovies().then(() => {
-//   console.log("✅ Movie import update process completed.");
-// });
 
 // ================= Default Webpage to jump to =================
 app.get('/', (req, res) => {

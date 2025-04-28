@@ -423,12 +423,6 @@ exports.addMovie = async (req, res) => {
     };
     await movies.insertOne(newMovie);
 
-    // Update the MovieList.json file
-    // const movieListPath = path.join(__dirname, "../Assets", "MovieList.json");
-    // const movieList = JSON.parse(fs.readFileSync(movieListPath, "utf-8"));
-    // movieList[title] = { ...newMovie }; // Add the new movie with timestamps
-    // fs.writeFileSync(movieListPath, JSON.stringify(movieList, null, 2));
-
     res.json({ success: true, message: "Movie added successfully." });
   } catch (error) {
     console.error("❌ Error adding movie:", error);
@@ -667,29 +661,6 @@ exports.deleteMovie = async (req, res) => {
   try {
     // Delete the movie from the database
     const result = await movies.deleteOne({ title });
-    // if (result.deletedCount === 1) {
-    //   // Update the MovieList.json file
-    //   const movieListPath = path.join(__dirname, "../Assets", "MovieList.json");
-    //   const movieList = JSON.parse(fs.readFileSync(movieListPath, "utf-8"));
-
-    //   // Find the exact key in MovieList.json that matches the title
-    //   const movieKey = Object.keys(movieList).find(
-    //     (key) => key.toLowerCase() === title.toLowerCase()
-    //   );
-
-    //   if (movieKey) {
-    //     delete movieList[movieKey]; // Remove the movie entry from the JSON object
-    //     fs.writeFileSync(movieListPath, JSON.stringify(movieList, null, 2)); // Save the updated JSON file
-    //     res.json({ success: true, message: `Movie "${title}" deleted successfully.` });
-    //   } else {
-    //     res.json({
-    //       success: false,
-    //       message: `Movie "${title}" not found in MovieList.json.`,
-    //     });
-    //   }
-    // } else {
-    //   res.json({ success: false, message: `Movie "${title}" not found in the database.` });
-    // }
   } catch (error) {
     console.error("❌ Error deleting movie:", error);
     res.status(500).json({ success: false, message: "Server error" });
