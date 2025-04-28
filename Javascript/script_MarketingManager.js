@@ -78,13 +78,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // === Initialize Counters for Each Movie ===
     const movieStats = {};
-    for (const [key, movie] of Object.entries(movies)) {
-      movieStats[key] = {
+    const movieTitleToKeyMap = {}; // Map movie titles to their keys
+
+    movies.forEach((movie, index) => {
+      movieStats[index] = {
         likes: 0,
         dislikes: 0,
         favorites: 0,
       };
-    }
+      movieTitleToKeyMap[movie.title] = index; // Map the movie title to its index
+    });
 
     // === Fetch Reactions for Each User ===
     console.log("Fetching user reactions...");
@@ -102,13 +105,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const reactions = reactionsData.reactions;
-
+      // console.log("Reactions for user:", email, reactions);
       // Increment counters for each movie based on reactions
-      for (const [movieKey, reaction] of Object.entries(reactions)) {
-        if (!movieStats[movieKey]) continue; // Skip if movieKey doesn't exist}
-        if (reaction.likedMovies) movieStats[movieKey].likes++;
-        if (reaction.dislikedMovies) movieStats[movieKey].dislikes++;
-        if (reaction.favorites) movieStats[movieKey].favorites++;
+      for (const [movieTitle, reaction] of Object.entries(reactions)) {
+        const movieKey = movieTitleToKeyMap[movieTitle]; // Get the corresponding key for the movie title
+        if (movieKey === undefined) {
+          console.warn(`Movie title "${movieTitle}" not found in movieTitleToKeyMap.`);
+          continue; // Skip if the movie title doesn't exist in the map
+        }
+
+        // Increment counters based on boolean values
+        if (reaction.likedMovies) {
+          movieStats[movieKey].likes++;
+          // console.log("Adding like for ", movieTitle);
+        }
+        if (reaction.dislikedMovies) {
+          movieStats[movieKey].dislikes++;
+          // console.log("Adding dislike for ", movieTitle);
+        }
+        if (reaction.favorites) {
+          movieStats[movieKey].favorites++;
+          // console.log("Adding favorite for ", movieTitle);
+        }
       }
     }
 
