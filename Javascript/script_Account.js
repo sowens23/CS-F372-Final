@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (sessionData.success) {
       currentUserEmail = sessionData.email;
+      // roles = sessionData.roles;
       username = sessionData.username || ""; // Leave blank if username is not provided
       bannerEmail.textContent = `Logged in as: ${sessionData.email}`;
       usernameElement.textContent = username; // Update the username in the DOM
@@ -27,6 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       username = null;
       bannerEmail.textContent = "Not logged in";
       usernameElement.textContent = ""; // Leave blank if no active session
+      alert("❌ You must be logged in to access this page.");
+      window.location.href = "../html/index_Login.html"; // Redirect to Login page
       console.warn("⚠ No active session found.");
     }
 

@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       currentUserEmail = null; // Ensure it's null if not logged in
       bannerEmail.textContent = "Not logged in";
       console.warn("⚠ No active session found.");
+      alert("❌ You must be logged in to access this page.");
+      window.location.href = "../html/index_Login.html"; // Redirect to Login page
     }
   } catch (error) {
     console.error("❌ Error fetching session data:", error);
