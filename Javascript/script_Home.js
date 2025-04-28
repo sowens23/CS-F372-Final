@@ -456,4 +456,12 @@ async function renderMovies(movies) {
     attachLikeDislikeButtonListeners(movieCard);
   });
 
+  // Automatically sort movies alphabetically
+  const sortSelect = document.getElementById("sort");
+  sortSelect.value = "Alphabetical"; // Set the dropdown to "Alphabetical"
+  const cards = Array.from(document.querySelectorAll(".movie-card"));
+  cards.sort((a, b) =>
+    a.querySelector("h3").textContent.localeCompare(b.querySelector("h3").textContent)
+  );
+  cards.forEach((card) => movieGrid.appendChild(card)); // Append sorted cards to the grid
 }
