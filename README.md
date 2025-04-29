@@ -138,7 +138,7 @@ Create and test five types of users (No-Account), (Viewer), (Content Editor), (M
 - MongoDB: For providing a reliable NoSQL database solution.
 - Node.js: For powering the backend server.
 - The Testers: Grace, Jonathan, and Daniel for testing the product and raising issues.
-- GitHub Copilot: Assistance with project structure, code writing, and debugging.
+- GitHub Copilot: Assistance with project structure and debugging.
 
 ## License
 This project is licensed under the GNU General Public License (GPL). See the [LICENSE](LICENSE) file for details.
