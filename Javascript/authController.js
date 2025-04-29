@@ -145,40 +145,6 @@ exports.getSession = async (req, res) => {
   }
 };
 
-// Update.js *NOT CURRENTLY IN USE*
-// exports.update = async (req, res) => {
-//   const { email, newEmail, newPassword } = req.body;
-//   const db = await connectDB();
-//   const users = db.collection('users');
-
-//   const user = await users.findOne({ email });
-//   if (!user) {
-//     return res.json({ success: false, message: 'User not found' });
-//   }
-
-//   const updateFields = {};
-
-//   if (newEmail && newEmail !== email) {
-//     const existing = await users.findOne({ email: newEmail });
-//     if (existing) {
-//       return res.json({ success: false, message: 'New email already in use' });
-//     }
-//     updateFields.email = newEmail;
-//   }
-
-//   if (newPassword && newPassword.trim().length >= 6) {
-//     const hashed = hash(newPassword, user.salt);
-//     updateFields.password = hashed;
-//   }
-
-//   if (Object.keys(updateFields).length === 0) {
-//     return res.json({ success: false, message: 'No update fields provided' });
-//   }
-
-//   await users.updateOne({ email }, { $set: updateFields });
-//   res.json({ success: true, message: 'Update successful' });
-// };
-
 
 // ======================== ADDED FAVORITES API ========================
 exports.addFavorites = async (req, res) => {
