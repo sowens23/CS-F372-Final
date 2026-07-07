@@ -6,7 +6,7 @@ Welcome to the SC Group Project repository. This project is a collaborative effo
 
 - **Spencer Baysinger** - Backend Development, Database Management
 - **Ivy Swenson** - Frontend Development, UI/UX Design, API Integration
-- 
+
 ### Final Project Demo Video
 [Watch the video](https://youtu.be/rvPUPhgZjw8)
 
